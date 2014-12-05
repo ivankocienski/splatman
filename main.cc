@@ -23,6 +23,10 @@ static GLFWwindow* main_window = NULL;
 
 static void on_key( GLFWwindow* win, int key, int scancode, int action, int mods ) {
 
+  if( action == GLFW_PRESS ) 
+    app.on_key_down( key );
+  else
+    app.on_key_up( key );
 }
 
 static void on_mouse_button( GLFWwindow* win, int button, int action, int mods ) {
@@ -104,7 +108,10 @@ int main(int argc, char ** argv ) {
  *     glfwSetWindowTitle( main_window, buffer );
  */
     
+
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+
+    app.move();
 
     app.draw();
 
