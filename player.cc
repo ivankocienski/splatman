@@ -63,7 +63,7 @@ void Player::move() {
       m_ypos += dir_yinc[m_dir];
 
     } else {
-      cout << "hit wall" << endl;
+//      cout << "hit wall" << endl;
       m_dir = PD_STATIONARY;
     }
 
@@ -92,7 +92,7 @@ void Player::move() {
   int mx = m_xpos & 15;
   int my = m_ypos & 15;
 
-  cout << "mx=" << mx << "  my=" << my << endl;
+  //cout << "mx=" << mx << "  my=" << my << endl;
 
   if( mx == 8 && my == 8 ) {
 

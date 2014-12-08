@@ -10,6 +10,10 @@ Application::Application() : m_player( &m_board ) {
 }
 
 void Application::init() {
+
+  m_ghosts.resize(1);
+
+  m_ghosts[0].setup( &m_board, 14, 12 );
 }
 
 void Application::cleanup() {
@@ -17,11 +21,17 @@ void Application::cleanup() {
 
 void Application::move() {
   m_player.move();
+
+  for( vector<Ghost>::iterator it = m_ghosts.begin(); it != m_ghosts.end(); it++ )
+    it->move();
 }
 
 void Application::draw() {
   m_board.draw();
   m_player.draw();
+
+  for( vector<Ghost>::iterator it = m_ghosts.begin(); it != m_ghosts.end(); it++ )
+    it->draw();
 }
 
 void Application::on_mouse_down( ) {

@@ -1,14 +1,19 @@
 
 #pragma once
 
+#include <vector>
+
 #include "board.hh"
 #include "player.hh"
+#include "ghost.hh"
 
 class Application {
 private:
 
   Board m_board;
   Player m_player;
+  
+  std::vector<Ghost> m_ghosts;
 
 public:
 

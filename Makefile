@@ -1,7 +1,7 @@
 
 EXE=splatman
 GPP=g++
-OBJ=main.o application.o board.o player.o
+OBJ=main.o application.o board.o player.o ghost.o
 CFLAGS=-Wall -g
 LIBS=-lglfw -lGL -lGLU
 
