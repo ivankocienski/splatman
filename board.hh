@@ -16,7 +16,7 @@ public:
   void reset();
 
   void draw();
-  bool player_can_go( int, int );
+  bool actor_can_go( int, int );
 
   int clear_pip( int, int );
 };

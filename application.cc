@@ -7,13 +7,20 @@
 using namespace std;
 
 Application::Application() : m_player( &m_board ) {
+
+  m_player.setup();
 }
 
 void Application::init() {
 
   m_ghosts.resize(1);
 
-  m_ghosts[0].setup( &m_board, 14, 12 );
+  m_ghosts[0].setup( &m_board, &m_player, 0, 0, -1 );
+
+//  m_ghosts[0].setup( &m_board, &m_player, 14, 12, Ghost::GC_RED );
+//  m_ghosts[1].setup( &m_board, &m_player, 12, 14, Ghost::GC_YELLOW );
+//  m_ghosts[2].setup( &m_board, &m_player, 14, 14, Ghost::GC_PINK );
+//  m_ghosts[3].setup( &m_board, &m_player, 16, 14, Ghost::GC_BLUE );
 }
 
 void Application::cleanup() {

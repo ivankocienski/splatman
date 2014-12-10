@@ -64,21 +64,24 @@ void Board::draw() {
   glEnd();
 }
 
-bool Board::player_can_go( int x, int y ) {
+bool Board::actor_can_go( int x, int y ) {
 
   x >>= 4;
   y >>= 4;
 
-  if(x < 0 || x > 28) return false;
-  if(y < 0 || y > 31) return false;
+  // the mid map warp points hack
+  if( y == 14 ) {
+    if( x <  1 ) return true;
+    if( x > 26 ) return true;
+  }
 
-  bool t = m_grid[ (y * 28) + x ] != '#';
+  if(x < 0 || x >= 27) return false;
+  if(y < 0 || y >= 30) return false;
 
-//  cout << "t=" << t << endl;
+  unsigned  char c = m_grid[ (y * 28) + x ];
 
 
-  return t;
-
+  return c != '#' && c != '-';
 }
 
 int Board::clear_pip( int x, int y ) {
@@ -86,8 +89,9 @@ int Board::clear_pip( int x, int y ) {
   x >>= 4;
   y >>= 4;
 
-  if(x < 0 || x > 28) return false;
-  if(y < 0 || y > 31) return false;
+
+  if(x < 0 || x > 28) return 0;
+  if(y < 0 || y > 31) return 0;
 
   unsigned char *c = m_grid + (y * 28) + x;
 

@@ -1,25 +1,11 @@
 
 #pragma once
 
-class Board;
+#include "actor.hh"
 
-class Player {
+class Player : public Actor {
 private:
 
-  enum { // player dir
-    PD_STATIONARY,
-    PD_UP,
-    PD_DOWN,
-    PD_LEFT,
-    PD_RIGHT
-  };
-
-  Board *m_board;
-
-  int m_xpos;
-  int m_ypos;
-  
-  int m_dir;
   int m_want_dir;
 
   int m_step;
@@ -29,7 +15,7 @@ public:
 
   Player( Board* );
 
-
+  void setup();
   void draw();
   void move();
 
@@ -37,4 +23,7 @@ public:
   void want_move_down();
   void want_move_left();
   void want_move_right();
+
+  int relative_dir_from( int, int );
+  int relative_dir_from2( int, int, int );
 };

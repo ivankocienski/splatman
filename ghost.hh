@@ -1,35 +1,49 @@
 
 #pragma once
 
-class Board;
+#include "actor.hh"
 
-class Ghost {
+class Player;
+
+class Ghost : public Actor{
 private:
 
-  enum { // ghost dir
-    GD_STATIONARY,
-    GD_UP,
-    GD_DOWN,
-    GD_LEFT,
-    GD_RIGHT
+  enum { // ghost mode
+    GM_PARKED,
+    GM_WANDER,
+    GM_HUNT,
+    GM_SCARED,
+    GM_EYES
   };
 
-  int m_xpos;
-  int m_ypos;
+  Player *m_player;
 
-  int m_dir;
-  int m_hold;
+  static const int alt_ghost_dir_1[];
+  static const int alt_ghost_dir_2[]; 
 
-  Board *m_board;
+  int m_mode;
+  int m_mode_hold;
+  int m_color;
 
-  bool is_at_intersection();
-  bool can_move(int);
-  void stop_and_go();
+  bool behind_me(int);
+
+  void move_parked();
+  void move_wander();
+  void move_hunt();
+  void move_scared();
+  void move_eyes();
 
 public:
 
+  enum {
+    GC_RED,
+    GC_YELLOW,
+    GC_PINK,
+    GC_BLUE
+  };
+
   Ghost();
-  void setup( Board*, int, int );
+  void setup( Board*, Player*, int, int, int );
 
   void draw();
   void move();
