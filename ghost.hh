@@ -21,6 +21,8 @@ private:
   static const int alt_ghost_dir_1[];
   static const int alt_ghost_dir_2[]; 
 
+  //int m_scared_count;
+
   int m_mode;
   int m_mode_hold;
   int m_color;
@@ -32,6 +34,8 @@ private:
   void move_hunt();
   void move_scared();
   void move_eyes();
+
+  void set_mode(int, int);
 
 public:
 
@@ -47,4 +51,9 @@ public:
 
   void draw();
   void move();
+
+  void trigger_scared();
+  void trigger_eyes();
+
+  bool is_scared();
 };

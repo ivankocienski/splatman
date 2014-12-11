@@ -73,3 +73,6 @@ void Actor::move_actor( int d ) {
     if( m_xpos >= 29 * 16) m_xpos -= 29 * 16;
   }
 }
+
+int Actor::xpos() { return m_xpos; }
+int Actor::ypos() { return m_ypos; }

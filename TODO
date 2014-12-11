@@ -1,0 +1,18 @@
+
+todo :-
+
+* ghost scared mode (triggering, leaving)
+? debug movements
+* ghost pellets, player pickup ghost pellets, ghosts go to scared mode
+- ghosts killing player
+- player eating ghosts
+- player pick up all pips
+- graphics
+- hud
+- player score / lives
+- death
+- score powerups
+- levels (increasing difficulty)
+
+- game over, game intro
+- high score, enter high score, reset high score, etc

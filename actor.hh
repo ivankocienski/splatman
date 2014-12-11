@@ -41,5 +41,8 @@ public:
 
   virtual void draw();
   virtual void move();
+
+  int xpos();
+  int ypos();
 };
 

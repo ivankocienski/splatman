@@ -2,20 +2,30 @@
 #pragma once
 
 #include "actor.hh"
+#include "ghost.hh"
+
+class Application;
 
 class Player : public Actor {
 private:
 
+  Application *m_application;
+  
   int m_want_dir;
 
   int m_step;
   unsigned char m_delay;
 
+  int m_pip_count;
+  int m_lives;
+  
 public:
 
-  Player( Board* );
+  Player( Application*, Board* );
 
   void setup();
+  void reset();
+
   void draw();
   void move();
 
@@ -26,4 +36,11 @@ public:
 
   int relative_dir_from( int, int );
   int relative_dir_from2( int, int, int );
+
+  int pip_count();
+
+  bool is_touching( Ghost& );
+
+  void decrement_lives();
+  int life_count();
 };

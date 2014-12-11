@@ -33,28 +33,24 @@ void Ghost::setup( Board *b, Player *p, int x, int y, int c ) {
 
   switch(c) {
     case GC_RED:
-      m_mode_hold = 0;
-      m_mode = GM_WANDER;
+      set_mode( GM_WANDER, 0);
       break;
 
     case GC_YELLOW:
       set_step(20);
-      m_mode_hold = 300;
-      m_mode = GM_PARKED;
+      set_mode(GM_PARKED, 300);
       m_dir  = AD_UP;
       break;
 
     case GC_PINK:
       set_step(20);
-      m_mode_hold = 0;
-      m_mode = GM_PARKED;
+      set_mode(GM_PARKED, 0);
       m_dir  = AD_UP;
       break;
 
     case GC_BLUE:
       set_step(20);
-      m_mode_hold = 700;
-      m_dir  = AD_DOWN;
+      set_mode(GM_PARKED, 700);
       break;
   }
 
@@ -66,7 +62,18 @@ void Ghost::draw() {
 
   glBegin( GL_QUADS );
 
-  glColor3f( ghost_color_r[m_color], ghost_color_g[m_color], ghost_color_b[m_color] );
+  if( m_mode == GM_SCARED ) {
+
+    float v = 0;
+
+    if(m_mode_hold < 200 && (m_mode_hold >> 4) & 1) {
+      v = 1;
+    } 
+
+    glColor3f( v, v, 1 );
+
+  } else
+    glColor3f( ghost_color_r[m_color], ghost_color_g[m_color], ghost_color_b[m_color] );
 
   int cx = m_xpos;
   int cy = m_ypos;
@@ -107,8 +114,7 @@ void Ghost::move_parked() {
     case 14 * 16 + 8: 
       if( m_ypos == 12 * 16 + 8 ) {
         set_step(10);
-        m_mode_hold = 200;
-        m_mode = GM_WANDER;
+        set_mode(GM_WANDER, 200);
         return;
       }
       m_dir = AD_UP;
@@ -129,8 +135,12 @@ void Ghost::move_wander() {
 
   } else {
 
-    cout << "go hunt" << endl;
-    m_mode = GM_HUNT;
+    if( m_mode == GM_SCARED ) 
+      set_mode(GM_WANDER, 200);
+
+    else 
+      set_mode(GM_HUNT, 0);
+
     return;
   }
 
@@ -213,8 +223,7 @@ void Ghost::move_hunt() {
   
   cout << "go wander" << endl;
 
-  m_mode = GM_WANDER;
-  m_mode_hold = 100 + rand() % 400;
+  set_mode(GM_WANDER, 100 + rand() % 400);
 }
 
 void Ghost::move_scared() {
@@ -224,6 +233,108 @@ void Ghost::move_scared() {
 
 void Ghost::move_eyes() {
 
+  if( !is_at_intersection() ) {
+    move_actor(m_dir);
+    return;
+  }
+
+  cout << "x=" << m_xpos << "  y=" << m_ypos << endl;
+
+  if( m_xpos == 232 ) {
+//    cout << "xxx" << endl;
+    if( m_ypos == 200 ) {
+//      cout << "yyy" << endl;
+      m_dir = AD_DOWN;
+      move_actor( m_dir );
+      return;
+    }
+
+    if( m_ypos == 232 ) {
+      set_mode(GM_PARKED, 0);
+      m_dir = AD_UP;
+      return;
+    }
+      
+  }
+
+  int i = 0;
+
+  if( can_move( AD_UP    )) i++;
+  if( can_move( AD_DOWN  )) i++;
+  if( can_move( AD_LEFT  )) i++;
+  if( can_move( AD_RIGHT )) i++;
+
+  cout << "i=" << i << endl;
+
+  if( i < 3 ) {
+    if(can_move( m_dir )) {
+      move_actor( m_dir );
+      return;
+    }
+  }
+
+  cout << "eyes: target" << endl;
+
+
+
+  if( m_ypos < 176 || m_ypos > 272 ) {
+
+    if( m_ypos > 192 ) {
+      if( can_move( AD_UP )) {
+        m_dir = AD_UP;
+        move_actor(m_dir);
+        return;
+      }
+
+    } else {
+      if( can_move( AD_DOWN )) {
+        m_dir = AD_DOWN;
+        move_actor(m_dir);
+        return;
+      }
+    }
+
+    if( m_dir == AD_UP || m_dir == AD_DOWN ) {
+
+      if( m_xpos > 224 ) {
+        if( can_move( AD_LEFT ))  m_dir = AD_LEFT;  else m_dir = AD_RIGHT;
+
+      } else {
+        if( can_move( AD_RIGHT )) m_dir = AD_RIGHT; else m_dir = AD_LEFT;
+
+      }
+    }
+
+    move_actor(m_dir);
+    return; 
+  }
+
+
+
+  if( m_xpos > 224 ) {
+    if( can_move( AD_LEFT )) {
+      m_dir = AD_LEFT;
+      move_actor(m_dir);
+      return;
+    }
+
+  } else {
+    if( can_move( AD_RIGHT )) {
+      m_dir = AD_RIGHT;
+      move_actor(m_dir);
+      return;
+    }
+  }
+
+  if( m_ypos > 192 ) {
+    if( can_move( AD_UP  ))  m_dir = AD_UP;  else m_dir = AD_DOWN;
+
+  } else {
+    if( can_move( AD_DOWN )) m_dir = AD_DOWN; else m_dir = AD_UP;
+
+  }
+
+  move_actor(m_dir);
 }
 
 void Ghost::move() {
@@ -246,8 +357,7 @@ void Ghost::move() {
       break;
 
     case GM_SCARED:
-      //move_scared();
-      move_wander();
+      move_scared();
       break;
 
     case GM_EYES:
@@ -255,5 +365,43 @@ void Ghost::move() {
       break;
   }
 
+}
+
+static const char* names[] = { "parked", "wander", "hunt", "scared", "eyes" };
+static const char* colors[] = { "red", "yellow", "pink", "blue" };
+
+void Ghost::set_mode( int m, int h ) {
+  m_mode = m;
+  m_mode_hold = h;
+
+  cout << colors[m_color] << " set_mode " << names[m_mode] << endl;
+
+  switch(m) { 
+    case GM_PARKED:
+    case GM_WANDER:
+    case GM_HUNT:
+      set_step(10);
+      break;
+
+    case GM_SCARED:
+      set_step(15);
+      break;
+
+    case GM_EYES:
+      set_step(5);
+      break;
+  }
+}
+
+void Ghost::trigger_scared() {
+  set_mode(GM_SCARED, 1000);
+}
+
+void Ghost::trigger_eyes() {
+  set_mode(GM_EYES, 0);
+}
+
+bool Ghost::is_scared() {
+  return m_mode == GM_SCARED;
 }
 

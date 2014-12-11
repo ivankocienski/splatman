@@ -15,6 +15,13 @@ private:
   
   std::vector<Ghost> m_ghosts;
 
+  int m_curx;
+  int m_cury;
+  bool m_okay;
+  unsigned char m_pulse;
+
+  void reset_actors();
+
 public:
 
   Application();
@@ -31,5 +38,7 @@ public:
 
   void on_key_down( int );
   void on_key_up( int );
+
+  void scare_ghosts();
 };
 

@@ -55,6 +55,14 @@ void Board::draw() {
           glVertex2f( cx - 2, cy + 2 );
           break;
 
+        case '*':
+          glColor3f( 0.8, 0.8, 0.8 );
+
+          glVertex2f( cx - 5, cy - 5 );
+          glVertex2f( cx + 5, cy - 5 );
+          glVertex2f( cx + 5, cy + 5 );
+          glVertex2f( cx - 5, cy + 5 );
+          break;
       }
 
       b++;
@@ -62,6 +70,10 @@ void Board::draw() {
       
 
   glEnd();
+}
+
+unsigned char Board::read_grid( int x, int y ) {
+
 }
 
 bool Board::actor_can_go( int x, int y ) {
@@ -89,13 +101,30 @@ int Board::clear_pip( int x, int y ) {
   x >>= 4;
   y >>= 4;
 
-
   if(x < 0 || x > 28) return 0;
   if(y < 0 || y > 31) return 0;
 
   unsigned char *c = m_grid + (y * 28) + x;
 
   if(*c == '.') {
+    *c = ' ';
+    return 1;
+  }
+
+  return 0;
+}
+
+int Board::clear_pill( int x, int y ) {
+
+  x >>= 4;
+  y >>= 4;
+
+  if(x < 0 || x > 28) return 0;
+  if(y < 0 || y > 31) return 0;
+
+  unsigned char *c = m_grid + (y * 28) + x;
+
+  if(*c == '*') {
     *c = ' ';
     return 1;
   }
