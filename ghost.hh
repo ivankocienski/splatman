@@ -4,6 +4,7 @@
 #include "actor.hh"
 
 class Player;
+class Graphics;
 
 class Ghost : public Actor{
 private:
@@ -17,7 +18,8 @@ private:
   };
 
   Player *m_player;
-
+  Graphics *m_graphics;
+  
   static const int alt_ghost_dir_1[];
   static const int alt_ghost_dir_2[]; 
 
@@ -41,13 +43,13 @@ public:
 
   enum {
     GC_RED,
-    GC_YELLOW,
+    GC_BLUE,
     GC_PINK,
-    GC_BLUE
+    GC_YELLOW
   };
 
   Ghost();
-  void setup( Board*, Player*, int, int, int );
+  void setup( Board*, Player*, Graphics*, int, int, int );
 
   void draw();
   void move();

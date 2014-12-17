@@ -8,6 +8,8 @@ using namespace std;
 #include "board.hh"
 #include "ghost.hh"
 #include "player.hh"
+#include "graphics.hh"
+
 
 const int Ghost::alt_ghost_dir_1[] = { Actor::AD_STATIONARY,  Actor::AD_LEFT, Actor::AD_RIGHT,   Actor::AD_UP, Actor::AD_DOWN };
 const int Ghost::alt_ghost_dir_2[] = { Actor::AD_STATIONARY, Actor::AD_RIGHT,  Actor::AD_LEFT, Actor::AD_DOWN, Actor::AD_UP   };
@@ -19,13 +21,14 @@ float ghost_color_b[] = {   0, 0.3, 0.5,   1 };
 Ghost::Ghost() : Actor() {
 }
 
-void Ghost::setup( Board *b, Player *p, int x, int y, int c ) {
+void Ghost::setup( Board *b, Player *p, Graphics *g, int x, int y, int c ) {
 
   Actor::setup(b);
 
   set_step(10);
 
-  m_player = p;
+  m_player   = p;
+  m_graphics = g;
 
   m_xpos  = x * 16 + 8;
   m_ypos  = y * 16 + 8;
@@ -58,32 +61,49 @@ void Ghost::setup( Board *b, Player *p, int x, int y, int c ) {
 
 void Ghost::draw() {
 
-  if(!m_board) return;
+  
+  int offset = 0;
 
-  glBegin( GL_QUADS );
+  switch( m_dir ) {
+    case AD_UP:
+    case AD_DOWN:
+      offset = (m_ypos >> 2) & 1;
+      break;
 
-  if( m_mode == GM_SCARED ) {
+    case AD_LEFT:
+    case AD_RIGHT:
+      offset = (m_xpos >> 2) & 1;
+      break;
+  }
 
-    float v = 0;
+  m_graphics->draw_ghost( m_xpos - 16, m_ypos - 16, (m_dir-1) * 2 + offset, m_color );
 
-    if(m_mode_hold < 200 && (m_mode_hold >> 4) & 1) {
-      v = 1;
-    } 
 
-    glColor3f( v, v, 1 );
-
-  } else
-    glColor3f( ghost_color_r[m_color], ghost_color_g[m_color], ghost_color_b[m_color] );
-
-  int cx = m_xpos;
-  int cy = m_ypos;
-
-  glVertex2f( cx - 8, cy - 8 );
-  glVertex2f( cx + 8, cy - 8 );
-  glVertex2f( cx + 8, cy + 8 );
-  glVertex2f( cx - 8, cy + 8 );
-
-  glEnd(); 
+/*   glBegin( GL_QUADS );
+ * 
+ *   if( m_mode == GM_SCARED ) {
+ * 
+ *     float v = 0;
+ * 
+ *     if(m_mode_hold < 200 && (m_mode_hold >> 4) & 1) {
+ *       v = 1;
+ *     } 
+ * 
+ *     glColor3f( v, v, 1 );
+ * 
+ *   } else
+ *     glColor3f( ghost_color_r[m_color], ghost_color_g[m_color], ghost_color_b[m_color] );
+ * 
+ *   int cx = m_xpos;
+ *   int cy = m_ypos;
+ * 
+ *   glVertex2f( cx - 8, cy - 8 );
+ *   glVertex2f( cx + 8, cy - 8 );
+ *   glVertex2f( cx + 8, cy + 8 );
+ *   glVertex2f( cx - 8, cy + 8 );
+ * 
+ *   glEnd(); 
+ */
 }
 
 // when in the little cell

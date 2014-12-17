@@ -11,7 +11,7 @@ todo :-
   * loading
   * board
   * pips and powerups
-  - player
+  * player
   - ghosts
   - hud (player score, lives)
 - death

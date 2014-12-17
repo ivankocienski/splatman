@@ -31,10 +31,10 @@ void Application::reset_actors() {
   
   m_player.reset();
 
-  m_ghosts[0].setup( &m_board, &m_player, 14, 12, Ghost::GC_RED );
-  m_ghosts[1].setup( &m_board, &m_player, 12, 14, Ghost::GC_YELLOW );
-  m_ghosts[2].setup( &m_board, &m_player, 14, 14, Ghost::GC_PINK );
-  m_ghosts[3].setup( &m_board, &m_player, 16, 14, Ghost::GC_BLUE );
+  m_ghosts[0].setup( &m_board, &m_player, &m_graphics, 14, 12, Ghost::GC_RED );
+  m_ghosts[1].setup( &m_board, &m_player, &m_graphics, 12, 14, Ghost::GC_YELLOW );
+  m_ghosts[2].setup( &m_board, &m_player, &m_graphics, 14, 14, Ghost::GC_PINK );
+  m_ghosts[3].setup( &m_board, &m_player, &m_graphics, 16, 14, Ghost::GC_BLUE );
 }
 
 void Application::cleanup() {
@@ -50,7 +50,6 @@ void Application::move() {
     exit(0);
   }
 
-  return;
 
   for( vector<Ghost>::iterator it = m_ghosts.begin(); it != m_ghosts.end(); it++ ) {
     it->move();
@@ -98,11 +97,11 @@ void Application::draw() {
   m_board.draw();
 
   m_player.draw();
-  glDisable(GL_TEXTURE_2D);
 
   for( vector<Ghost>::iterator it = m_ghosts.begin(); it != m_ghosts.end(); it++ )
     it->draw();
 
+  glDisable(GL_TEXTURE_2D);
 
   m_pulse++;
   if( (m_pulse >> 7 ) & 1 ) return;

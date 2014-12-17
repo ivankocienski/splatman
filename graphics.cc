@@ -12,6 +12,7 @@ Graphics::Graphics() {
   m_board  = 0;
   m_misc   = 0;
   m_player = 0;
+  m_ghosts = 0;
 }
 
 
@@ -79,6 +80,9 @@ bool Graphics::init() {
   m_player = load_image( "player.png" );
   if(!m_player) return false;
 
+  m_ghosts = load_image( "ghosts.png" );
+  if(!m_ghosts) return false;
+
   return true;
 }
 
@@ -87,11 +91,7 @@ void Graphics::cleanup() {
   if(m_board)   glDeleteTextures( 1, &m_board );
   if(m_misc)    glDeleteTextures( 1, &m_misc );
   if(m_player)  glDeleteTextures( 1, &m_player );
-}
-
-void Graphics::draw8(int dx, int dy, int n) {
-
-  // ... profit!
+  if(m_ghosts)  glDeleteTextures( 1, &m_ghosts );
 }
 
 void Graphics::draw_board( int x, int y ) {
@@ -160,3 +160,20 @@ void Graphics::draw_player( int x, int y, int n ) {
   glEnd();
 }
 
+void Graphics::draw_ghost( int x, int y, int n, int c ) {
+
+  float dx = 1.0 / 8.0;
+  float dy = 1.0 / 5.0;
+
+  glColor3f( 1, 1, 1 );
+  glBindTexture( GL_TEXTURE_2D, m_ghosts );
+
+  glBegin( GL_QUADS );
+
+  glTexCoord2d( dx*n,     dy*c);     glVertex2f(    x, y    );
+  glTexCoord2d( dx*(n+1), dy*c);     glVertex2f( x+32, y    );
+  glTexCoord2d( dx*(n+1), dy*(c+1)); glVertex2f( x+32, y+32 );
+  glTexCoord2d( dx*n,     dy*(c+1)); glVertex2f(    x, y+32 );
+
+  glEnd();
+}
