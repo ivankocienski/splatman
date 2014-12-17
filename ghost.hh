@@ -56,4 +56,5 @@ public:
   void trigger_eyes();
 
   bool is_scared();
+  bool is_eyes();
 };

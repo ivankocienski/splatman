@@ -4,10 +4,11 @@ todo :-
 * ghost scared mode (triggering, leaving)
 ? debug movements
 * ghost pellets, player pickup ghost pellets, ghosts go to scared mode
-- ghosts killing player
-- player eating ghosts
-- player pick up all pips
+* ghosts killing player
+* player eating ghosts
+* player pick up all pips
 - graphics
+  - loading
 - hud
 - player score / lives
 - death

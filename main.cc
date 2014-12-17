@@ -92,6 +92,13 @@ int main(int argc, char ** argv ) {
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 
+  //glEnable(GL_TEXTURE_2D);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+  glClearColor(0.0, 0.0, 0.0, 0.0);
+  glColor3f( 1, 1, 1 );
+
   app.init();
 
   previous = glfwGetTime();

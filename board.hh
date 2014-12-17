@@ -6,7 +6,7 @@ private:
   
   unsigned char *m_grid;
 
-  unsigned char read_grid( int, int );
+  int m_pip_count;
   
 public:
 
@@ -19,5 +19,6 @@ public:
 
   int clear_pip( int, int );
   int clear_pill( int, int );
+  int pip_count();
 };
 

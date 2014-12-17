@@ -18,6 +18,14 @@ Board::Board() {
 void Board::reset() {
 
   memcpy( m_grid, board_data, 28 * 31);
+
+  m_pip_count = 0;
+
+  for( int i = 0; i < 28 * 31; i++ ) {
+    if( m_grid[i] == '.' ) m_pip_count++;
+  }
+
+  cout << "board:: pip_count=" << m_pip_count << endl;
 }
 
 void Board::draw() {
@@ -28,6 +36,7 @@ void Board::draw() {
   int y;
 
 
+  //glDisable( GL_TEXTURE_2D );
   glBegin( GL_QUADS );
 
   for( y = 0; y < 31; y++ )
@@ -37,14 +46,14 @@ void Board::draw() {
       int cy = y * 16 + 8;
 
       switch( *b) {
-        case '#':
-          glColor3f( 0, 0, 1 );
-
-          glVertex2f( cx - 8, cy - 8 );
-          glVertex2f( cx + 8, cy - 8 );
-          glVertex2f( cx + 8, cy + 8 );
-          glVertex2f( cx - 8, cy + 8 );
-          break;
+//        case '#':
+//          glColor3f( 0, 0, 1 );
+//
+//          glVertex2f( cx - 8, cy - 8 );
+//          glVertex2f( cx + 8, cy - 8 );
+//          glVertex2f( cx + 8, cy + 8 );
+//          glVertex2f( cx - 8, cy + 8 );
+//          break;
 
         case '.':
           glColor3f( 0.6, 0.6, 0.6 );
@@ -70,10 +79,7 @@ void Board::draw() {
       
 
   glEnd();
-}
-
-unsigned char Board::read_grid( int x, int y ) {
-
+  //glEnable( GL_TEXTURE_2D );
 }
 
 bool Board::actor_can_go( int x, int y ) {
@@ -131,3 +137,8 @@ int Board::clear_pill( int x, int y ) {
 
   return 0;
 }
+
+int Board::pip_count() {
+  return m_pip_count;
+}
+

@@ -384,7 +384,7 @@ void Ghost::set_mode( int m, int h ) {
       break;
 
     case GM_SCARED:
-      set_step(15);
+      set_step(25);
       break;
 
     case GM_EYES:
@@ -405,3 +405,6 @@ bool Ghost::is_scared() {
   return m_mode == GM_SCARED;
 }
 
+bool Ghost::is_eyes() {
+  return m_mode == GM_EYES;
+}

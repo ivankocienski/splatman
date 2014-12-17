@@ -3,12 +3,16 @@
 
 #include <vector>
 
+#include "graphics.hh"
+
 #include "board.hh"
 #include "player.hh"
 #include "ghost.hh"
 
 class Application {
 private:
+
+  Graphics m_graphics;
 
   Board m_board;
   Player m_player;

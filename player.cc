@@ -68,6 +68,7 @@ void Player::move() {
     if( is_at_intersection() ) {
       if( m_board->clear_pip( m_xpos, m_ypos ) ) {
         m_pip_count++;
+        cout << "player: pip_count=" << m_pip_count << endl;
       }
 
       if( m_board->clear_pill( m_xpos, m_ypos )) {

@@ -20,6 +20,8 @@ Application::Application() : m_player( this, &m_board ) {
 
 void Application::init() {
 
+  m_graphics.init();
+  
   m_ghosts.resize(4);
 
   reset_actors();
@@ -41,30 +43,42 @@ void Application::cleanup() {
 void Application::move() {
   m_player.move();
 
+  if( m_player.pip_count() == m_board.pip_count() ) {
+    cout << "you have all the pips" << endl;
+    exit(0);
+  }
+
+  return;
+
   for( vector<Ghost>::iterator it = m_ghosts.begin(); it != m_ghosts.end(); it++ ) {
     it->move();
 
-    if( m_player.is_touching( *it )) {
-
-      if( it->is_scared()) {
-        it->trigger_eyes();
-
-      } else {
-        // TODO: death animation
-        cout << "loses life" << endl;
-        
-        m_player.decrement_lives();
-        if( m_player.life_count() ) {
-        
-          reset_actors();
-        } else {
-          cout << "You have no lives left" << endl;
-          exit(0);
-
-        }
-
-      }
-    }
+/*     if( m_player.is_touching( *it )) {
+ * 
+ *       if( it->is_scared()) {
+ *         it->trigger_eyes();
+ * 
+ *       } else {
+ * 
+ *         if( !it->is_eyes() ) {
+ * 
+ *           // TODO: death animation
+ *           cout << "loses life" << endl;
+ *           
+ *           m_player.decrement_lives();
+ *           if( m_player.life_count() ) {
+ *           
+ *             reset_actors();
+ *           } else {
+ *             cout << "You have no lives left" << endl;
+ *             exit(0);
+ * 
+ *           }
+ *         }
+ * 
+ *       }
+ *     }
+ */
   }
 }
 
@@ -76,6 +90,10 @@ void Application::scare_ghosts() {
 
 void Application::draw() {
 
+  glEnable(GL_TEXTURE_2D);
+  m_graphics.draw_board( 0, 0 );
+  glDisable(GL_TEXTURE_2D);
+  
 
   m_board.draw();
   m_player.draw();
