@@ -10,10 +10,20 @@ using namespace std;
 #include "board.hh"
 #include "application.hh"
 
-Player::Player( Application *a, Board *b ) : Actor() {
+static const int anim_sprites[] = {
+  0, 0, 0, 0, // stationary
+  0, 7, 8, 7, // up
+  0, 5, 6, 5, // down
+  0, 3, 4, 3, // left
+  0, 1, 2, 1  // right
+};
+
+
+Player::Player( Application *a, Board *b, Graphics *g ) : Actor() {
 
   Actor::setup(b);
 
+  m_graphics    = g;
   m_application = a;
   
   m_want_dir = AD_STATIONARY;
@@ -37,19 +47,34 @@ void Player::reset() {
 
 void Player::draw() {
   
-  glBegin( GL_QUADS );
+  int offset = 0;
 
-  glColor3f( 1, 1, 0 );
+  switch( m_dir ) {
+    case AD_UP:
+    case AD_DOWN:
+      offset = (m_ypos >> 3) & 3;
+      break;
 
-  int cx = m_xpos;
-  int cy = m_ypos;
+    case AD_LEFT:
+    case AD_RIGHT:
+      offset = (m_xpos >> 3) & 3;
+      break;
+  }
 
-  glVertex2f( cx - 8, cy - 8 );
-  glVertex2f( cx + 8, cy - 8 );
-  glVertex2f( cx + 8, cy + 8 );
-  glVertex2f( cx - 8, cy + 8 );
 
-  glEnd(); 
+
+  
+  m_graphics->draw_player( m_xpos - 16, m_ypos - 16, anim_sprites[ (m_dir << 2) + offset ]);
+
+//  int cx = m_xpos;
+//  int cy = m_ypos;
+//
+//  glVertex2f( cx - 8, cy - 8 );
+//  glVertex2f( cx + 8, cy - 8 );
+//  glVertex2f( cx + 8, cy + 8 );
+//  glVertex2f( cx - 8, cy + 8 );
+//
+//  glEnd(); 
 }
 
 void Player::move() {

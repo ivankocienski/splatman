@@ -9,7 +9,7 @@
 
 using namespace std;
 
-Application::Application() : m_player( this, &m_board ) {
+Application::Application() : m_player( this, &m_board, &m_graphics ), m_board( &m_graphics ) {
 
   m_player.setup();
 
@@ -38,6 +38,8 @@ void Application::reset_actors() {
 }
 
 void Application::cleanup() {
+
+  m_graphics.cleanup();
 }
 
 void Application::move() {
@@ -92,11 +94,11 @@ void Application::draw() {
 
   glEnable(GL_TEXTURE_2D);
   m_graphics.draw_board( 0, 0 );
-  glDisable(GL_TEXTURE_2D);
   
-
   m_board.draw();
+
   m_player.draw();
+  glDisable(GL_TEXTURE_2D);
 
   for( vector<Ghost>::iterator it = m_ghosts.begin(); it != m_ghosts.end(); it++ )
     it->draw();

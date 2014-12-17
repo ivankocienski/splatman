@@ -9,12 +9,11 @@
 //static const char *file = "sprites.png";
 
 Graphics::Graphics() {
-
+  m_board  = 0;
+  m_misc   = 0;
+  m_player = 0;
 }
 
-Graphics::~Graphics() {
-
-}
 
 GLuint Graphics::load_image( const char *from ) {
 
@@ -72,11 +71,23 @@ GLuint Graphics::load_image( const char *from ) {
 bool Graphics::init() {
 
   m_board = load_image( "board.png" );
-  
+  if(!m_board) return false;
+
+  m_misc  = load_image( "misc.png" );
+  if(!m_misc) return false;
+
+  m_player = load_image( "player.png" );
+  if(!m_player) return false;
 
   return true;
 }
 
+void Graphics::cleanup() {
+
+  if(m_board)   glDeleteTextures( 1, &m_board );
+  if(m_misc)    glDeleteTextures( 1, &m_misc );
+  if(m_player)  glDeleteTextures( 1, &m_player );
+}
 
 void Graphics::draw8(int dx, int dy, int n) {
 
@@ -97,3 +108,55 @@ void Graphics::draw_board( int x, int y ) {
 
   glEnd();
 }
+
+void Graphics::draw_pip(int x, int y) {
+
+  float d = 1.0 / 12.0;
+
+  glColor3f( 1, 1, 1 );
+  glBindTexture( GL_TEXTURE_2D, m_misc );
+
+  glBegin( GL_QUADS );
+
+  glTexCoord2d( 0, 0); glVertex2f(    x, y    );
+  glTexCoord2d( d, 0); glVertex2f( x+16, y    );
+  glTexCoord2d( d, 1); glVertex2f( x+16, y+16 );
+  glTexCoord2d( 0, 1); glVertex2f(    x, y+16 );
+
+  glEnd();
+}
+
+void Graphics::draw_pill(int x, int y) {
+
+  float d = 1.0 / 12.0;
+
+  glColor3f( 1, 1, 1 );
+  glBindTexture( GL_TEXTURE_2D, m_misc );
+
+  glBegin( GL_QUADS );
+
+  glTexCoord2d( d*1, 0); glVertex2f(    x, y    );
+  glTexCoord2d( d*2, 0); glVertex2f( x+16, y    );
+  glTexCoord2d( d*2, 1); glVertex2f( x+16, y+16 );
+  glTexCoord2d( d*1, 1); glVertex2f(    x, y+16 );
+
+  glEnd();
+}
+
+void Graphics::draw_player( int x, int y, int n ) {
+
+  float d = 1.0 / 20.0;
+
+  glColor3f( 1, 1, 1 );
+  glBindTexture( GL_TEXTURE_2D, m_player );
+
+  glBegin( GL_QUADS );
+
+  glTexCoord2d( d*n,     0); glVertex2f(    x, y    );
+  glTexCoord2d( d*(n+1), 0); glVertex2f( x+32, y    );
+  glTexCoord2d( d*(n+1), 1); glVertex2f( x+32, y+32 );
+  glTexCoord2d( d*n,     1); glVertex2f(    x, y+32 );
+
+  glEnd();
+}
+

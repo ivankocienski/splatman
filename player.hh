@@ -5,12 +5,14 @@
 #include "ghost.hh"
 
 class Application;
+class Graphics;
 
 class Player : public Actor {
 private:
 
   Application *m_application;
-  
+  Graphics *m_graphics;
+
   int m_want_dir;
 
   int m_step;
@@ -21,7 +23,7 @@ private:
   
 public:
 
-  Player( Application*, Board* );
+  Player( Application*, Board*, Graphics* );
 
   void setup();
   void reset();

@@ -7,8 +7,12 @@ using namespace std;
 
 #include "board.hh"
 #include "board-data.hh"
+#include "graphics.hh"
 
-Board::Board() {
+Board::Board( Graphics *g ) {
+  
+  m_graphics = g;
+
   m_grid = new  unsigned char [ 28 * 31 ];
   if(!m_grid) { throw "failed to alloc grid buffer"; }
   
@@ -37,13 +41,13 @@ void Board::draw() {
 
 
   //glDisable( GL_TEXTURE_2D );
-  glBegin( GL_QUADS );
+//  glBegin( GL_QUADS );
 
   for( y = 0; y < 31; y++ )
     for( x = 0; x < 28; x++ ) {
 
-      int cx = x * 16 + 8;
-      int cy = y * 16 + 8;
+//      int cx = x * 16 + 8;
+//      int cy = y * 16 + 8;
 
       switch( *b) {
 //        case '#':
@@ -56,21 +60,23 @@ void Board::draw() {
 //          break;
 
         case '.':
-          glColor3f( 0.6, 0.6, 0.6 );
-
-          glVertex2f( cx - 2, cy - 2 );
-          glVertex2f( cx + 2, cy - 2 );
-          glVertex2f( cx + 2, cy + 2 );
-          glVertex2f( cx - 2, cy + 2 );
+          m_graphics->draw_pip( x << 4, y << 4 );
+//          glColor3f( 0.6, 0.6, 0.6 );
+//
+//          glVertex2f( cx - 2, cy - 2 );
+//          glVertex2f( cx + 2, cy - 2 );
+//          glVertex2f( cx + 2, cy + 2 );
+//          glVertex2f( cx - 2, cy + 2 );
           break;
 
         case '*':
-          glColor3f( 0.8, 0.8, 0.8 );
-
-          glVertex2f( cx - 5, cy - 5 );
-          glVertex2f( cx + 5, cy - 5 );
-          glVertex2f( cx + 5, cy + 5 );
-          glVertex2f( cx - 5, cy + 5 );
+          m_graphics->draw_pill( x << 4, y << 4 );
+//          glColor3f( 0.8, 0.8, 0.8 );
+//
+//          glVertex2f( cx - 5, cy - 5 );
+//          glVertex2f( cx + 5, cy - 5 );
+//          glVertex2f( cx + 5, cy + 5 );
+//          glVertex2f( cx - 5, cy + 5 );
           break;
       }
 
@@ -78,7 +84,7 @@ void Board::draw() {
     }
       
 
-  glEnd();
+//  glEnd();
   //glEnable( GL_TEXTURE_2D );
 }
 

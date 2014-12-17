@@ -1,16 +1,20 @@
 
 #pragma once
 
+class Graphics;
+
 class Board {
 private:
-  
+
+  Graphics *m_graphics;
+
   unsigned char *m_grid;
 
   int m_pip_count;
   
 public:
 
-  Board();
+  Board(Graphics*);
 
   void reset();
 
