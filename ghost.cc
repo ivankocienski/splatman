@@ -67,6 +67,27 @@ void Ghost::reset() {
 
 void Ghost::draw() {
 
+  if( m_mode == GM_EYES ) {
+
+    int offset = 0;
+
+    switch( m_dir ) {
+      case AD_UP:
+      case AD_DOWN:
+        offset = (m_ypos >> 4) & 1;
+        break;
+
+      case AD_LEFT:
+      case AD_RIGHT:
+        offset = (m_xpos >> 4) & 1;
+        break;
+    }
+
+    m_graphics->draw_ghost( m_xpos - 16 + 179, m_ypos - 16 + 52, offset + 4, 4 );
+
+    return;
+  }
+
   int sprite;
   int color;
   int offset = 0;
@@ -83,29 +104,22 @@ void Ghost::draw() {
       break;
   }
 
-  switch( m_mode ) {
+  if( m_mode == GM_SCARED ) {
 
-    case GM_EYES:
-      color = 4;
-      sprite = 4 + offset;
-      break;
+    color  = 4;
+    sprite = offset;
 
-    case GM_SCARED:
-      color  = 4;
-      sprite = offset;
+    if(m_mode_hold < 200 && (m_mode_hold >> 4) & 1) {
+      sprite += 2;
+    } 
 
-      if(m_mode_hold < 200 && (m_mode_hold >> 4) & 1) {
-        sprite += 2;
-      } 
-      break;
-
-    default:
-      sprite = (m_dir-1) * 2 + offset;
-      color  = m_color;
-      break;
+  } else { 
+    sprite = (m_dir-1) * 2 + offset;
+    color  = m_color;
   }
 
   m_graphics->draw_ghost( m_xpos - 16 + 179, m_ypos - 16 + 52, sprite, color );
+
 
 }
 
