@@ -48,8 +48,8 @@ public:
     GC_YELLOW
   };
 
-  Ghost();
-  void setup( Board*, Player*, Graphics*, int, int, int );
+  Ghost( Board*, Player*, Graphics*, int );
+  void reset();
 
   void draw();
   void move();

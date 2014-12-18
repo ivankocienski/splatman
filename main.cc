@@ -54,8 +54,8 @@ int main(int argc, char ** argv ) {
   struct timespec ts;
 
 
-  char buffer[200]; 
-  float previous; 
+//  char buffer[200]; 
+//  float previous; 
 
   atexit(cleanup);
 
@@ -92,7 +92,7 @@ int main(int argc, char ** argv ) {
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 
-  //glEnable(GL_TEXTURE_2D);
+  glEnable(GL_TEXTURE_2D);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -101,7 +101,7 @@ int main(int argc, char ** argv ) {
 
   app.init();
 
-  previous = glfwGetTime();
+//  previous = glfwGetTime();
   ts.tv_sec  = 0;
   ts.tv_nsec = 50 * 1000;
 

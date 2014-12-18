@@ -14,46 +14,52 @@ using namespace std;
 const int Ghost::alt_ghost_dir_1[] = { Actor::AD_STATIONARY,  Actor::AD_LEFT, Actor::AD_RIGHT,   Actor::AD_UP, Actor::AD_DOWN };
 const int Ghost::alt_ghost_dir_2[] = { Actor::AD_STATIONARY, Actor::AD_RIGHT,  Actor::AD_LEFT, Actor::AD_DOWN, Actor::AD_UP   };
 
-float ghost_color_r[] = {   1,   1,   1, 0.5 };
-float ghost_color_g[] = { 0.2,   1, 0.5, 0.5 };
-float ghost_color_b[] = {   0, 0.3, 0.5,   1 };
 
-Ghost::Ghost() : Actor() {
-}
+static const int cell_left_col  = 12 * 16 + 1;
+static const int cell_right_col = 16 * 16 + 1;
+static const int cell_mid_col   = 14 * 16 + 1;
+static const int cell_floor     = 15 * 16;
+static const int cell_cieling   = 14 * 16;
+static const int cell_escape    = 11 * 16 + 8;
 
-void Ghost::setup( Board *b, Player *p, Graphics *g, int x, int y, int c ) {
+Ghost::Ghost( Board *b, Player *p, Graphics *g, int c ) : Actor() {
 
   Actor::setup(b);
 
-  set_step(10);
-
   m_player   = p;
   m_graphics = g;
+  m_color    = c;
+}
 
-  m_xpos  = x * 16 + 8;
-  m_ypos  = y * 16 + 8;
-  m_color = c;
+void Ghost::reset() {
 
-  switch(c) {
+  switch(m_color) {
     case GC_RED:
+      m_xpos = cell_mid_col;
+      m_ypos = cell_escape;
+      m_dir  = (rand() & 1) ? AD_LEFT : AD_RIGHT;
       set_mode( GM_WANDER, 0);
       break;
 
     case GC_YELLOW:
-      set_step(20);
-      set_mode(GM_PARKED, 300);
+      m_xpos = cell_right_col;
+      m_ypos = cell_floor;
+      set_mode(GM_PARKED, 500);
       m_dir  = AD_UP;
       break;
 
     case GC_PINK:
-      set_step(20);
+      m_xpos = cell_mid_col;
+      m_ypos = cell_floor;
       set_mode(GM_PARKED, 0);
       m_dir  = AD_UP;
       break;
 
     case GC_BLUE:
-      set_step(20);
-      set_mode(GM_PARKED, 700);
+      m_xpos = cell_left_col;
+      m_ypos = cell_floor;
+      set_mode(GM_PARKED, 200);
+      m_dir  = AD_UP;
       break;
   }
 
@@ -108,42 +114,86 @@ void Ghost::draw() {
 
 // when in the little cell
 void Ghost::move_parked() {
-  
-  if( m_mode_hold ) {
+
+  if( m_mode_hold ) 
     m_mode_hold--;
-
-    if( can_move( m_dir )) 
-      move_actor( m_dir );
-    else
-      m_dir = m_dir == AD_UP ? AD_DOWN : AD_UP;
-
-    return;
-  }
-
-  if( !is_at_intersection() ) {
-    move_actor(m_dir);
-    return;
-  }
 
   switch( m_xpos ) {
 
-    case 12 * 16 + 8: 
-      m_dir = AD_RIGHT;
+    case cell_left_col: 
+      if( m_ypos <= cell_cieling )
+        m_dir = AD_DOWN;
+
+      else {
+        if( m_ypos >= cell_floor ) {
+          if( m_mode_hold ) 
+            m_dir = AD_UP;
+          else
+            m_dir = AD_RIGHT;
+        }
+      }
       break;
 
-    case 14 * 16 + 8: 
-      if( m_ypos == 12 * 16 + 8 ) {
-        set_step(10);
+    case cell_mid_col: 
+      if( m_ypos <= cell_escape ) {
+        m_dir  = (rand() & 1) ? AD_LEFT : AD_RIGHT;
         set_mode(GM_WANDER, 200);
         return;
       }
       m_dir = AD_UP;
       break;
 
-    case 16 * 16 + 8: 
-      m_dir = AD_LEFT;
+    case cell_right_col: 
+      if( m_ypos <= cell_cieling )
+        m_dir = AD_DOWN;
+
+      else {
+        if( m_ypos >= cell_floor ) {
+          if( m_mode_hold ) 
+            m_dir = AD_UP;
+          else
+            m_dir = AD_LEFT;
+        }
+      }
       break;
   }
+  
+/*   if( m_mode_hold ) {
+ *     m_mode_hold--;
+ * 
+ *     if( can_move( m_dir )) 
+ *       move_actor( m_dir );
+ *     else
+ *       m_dir = m_dir == AD_UP ? AD_DOWN : AD_UP;
+ * 
+ *     return;
+ *   }
+ * 
+ *   if( !is_at_intersection() ) {
+ *     move_actor(m_dir);
+ *     return;
+ *   }
+ * 
+ *   switch( m_xpos ) {
+ * 
+ *     case 12 * 16 + 8: 
+ *       m_dir = AD_RIGHT;
+ *       break;
+ * 
+ *     case 14 * 16 + 1: 
+ *       if( m_ypos <= 11 * 16 + 8 ) {
+ *         m_dir  = (rand() & 1) ? AD_LEFT : AD_RIGHT;
+ *         set_mode(GM_WANDER, 200);
+ *         return;
+ *       }
+ *       m_dir = AD_UP;
+ *       break;
+ * 
+ *     case 16 * 16 + 8: 
+ *       m_dir = AD_LEFT;
+ *       break;
+ *   }
+ */
 
   move_actor(m_dir);
 }
@@ -398,6 +448,9 @@ void Ghost::set_mode( int m, int h ) {
 
   switch(m) { 
     case GM_PARKED:
+      set_step(25);
+      break;
+
     case GM_WANDER:
     case GM_HUNT:
       set_step(10);

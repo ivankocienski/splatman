@@ -9,7 +9,7 @@
 
 using namespace std;
 
-Application::Application() : m_player( this, &m_board, &m_graphics ), m_board( &m_graphics ) {
+Application::Application() : m_board( &m_graphics ), m_player( this, &m_board, &m_graphics ) {
 
   m_player.setup();
 
@@ -22,7 +22,10 @@ void Application::init() {
 
   m_graphics.init();
   
-  m_ghosts.resize(4);
+  m_ghosts.push_back( Ghost( &m_board, &m_player, &m_graphics, Ghost::GC_RED ));
+  m_ghosts.push_back( Ghost( &m_board, &m_player, &m_graphics, Ghost::GC_YELLOW ));
+  m_ghosts.push_back( Ghost( &m_board, &m_player, &m_graphics, Ghost::GC_PINK ));
+  m_ghosts.push_back( Ghost( &m_board, &m_player, &m_graphics, Ghost::GC_BLUE ));
 
   reset_actors();
 }
@@ -31,10 +34,8 @@ void Application::reset_actors() {
   
   m_player.reset();
 
-  m_ghosts[0].setup( &m_board, &m_player, &m_graphics, 14, 12, Ghost::GC_RED );
-  m_ghosts[1].setup( &m_board, &m_player, &m_graphics, 12, 14, Ghost::GC_YELLOW );
-  m_ghosts[2].setup( &m_board, &m_player, &m_graphics, 14, 14, Ghost::GC_PINK );
-  m_ghosts[3].setup( &m_board, &m_player, &m_graphics, 16, 14, Ghost::GC_BLUE );
+  for( vector<Ghost>::iterator it = m_ghosts.begin(); it != m_ghosts.end(); it++ ) 
+    it->reset();
 }
 
 void Application::cleanup() {
@@ -91,8 +92,6 @@ void Application::scare_ghosts() {
 
 void Application::draw() {
 
-  glEnable(GL_TEXTURE_2D);
-
   m_graphics.draw_board( 179, 52 );
 
   m_graphics.draw_font_string( 179, 0, "Game score" );
@@ -112,8 +111,6 @@ void Application::draw() {
 
   for( vector<Ghost>::iterator it = m_ghosts.begin(); it != m_ghosts.end(); it++ )
     it->draw();
-
-  glDisable(GL_TEXTURE_2D);
 
 }
 

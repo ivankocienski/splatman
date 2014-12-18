@@ -111,7 +111,7 @@ void Graphics::cleanup() {
 
 void Graphics::draw_board( int x, int y ) {
 
-  glColor3f( 1, 1, 1 );
+//  glColor3f( 1, 1, 1 );
   glBindTexture( GL_TEXTURE_2D, m_board );
 
   glBegin( GL_QUADS );
@@ -128,7 +128,7 @@ void Graphics::draw_pip(int x, int y) {
 
   float d = 1.0 / 12.0;
 
-  glColor3f( 1, 1, 1 );
+//  glColor3f( 1, 1, 1 );
   glBindTexture( GL_TEXTURE_2D, m_misc );
 
   glBegin( GL_QUADS );
@@ -145,7 +145,7 @@ void Graphics::draw_pill(int x, int y) {
 
   float d = 1.0 / 12.0;
 
-  glColor3f( 1, 1, 1 );
+//  glColor3f( 1, 1, 1 );
   glBindTexture( GL_TEXTURE_2D, m_misc );
 
   glBegin( GL_QUADS );
@@ -162,7 +162,7 @@ void Graphics::draw_player( int x, int y, int n ) {
 
   float d = 1.0 / 20.0;
 
-  glColor3f( 1, 1, 1 );
+//  glColor3f( 1, 1, 1 );
   glBindTexture( GL_TEXTURE_2D, m_player );
 
   glBegin( GL_QUADS );
@@ -180,7 +180,7 @@ void Graphics::draw_ghost( int x, int y, int n, int c ) {
   float dx = 1.0 / 8.0;
   float dy = 1.0 / 5.0;
 
-  glColor3f( 1, 1, 1 );
+//  glColor3f( 1, 1, 1 );
   glBindTexture( GL_TEXTURE_2D, m_ghosts );
 
   glBegin( GL_QUADS );
@@ -197,7 +197,7 @@ void Graphics::draw_font_string( int x, int y, const char *c ) {
 
   float d = 1.0 / 42;
 
-  glColor3f( 1, 1, 1 );
+//  glColor3f( 1, 1, 1 );
   glBindTexture( GL_TEXTURE_2D, m_font );
 
   glBegin( GL_QUADS );
@@ -222,7 +222,7 @@ void Graphics::draw_font_number( int x, int y, int n ) {
 
   float d = 1.0 / 42;
 
-  glColor3f( 1, 1, 1 );
+//  glColor3f( 1, 1, 1 );
   glBindTexture( GL_TEXTURE_2D, m_font );
 
   glBegin( GL_QUADS );

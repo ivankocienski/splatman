@@ -12,10 +12,10 @@ using namespace std;
 
 static const int anim_sprites[] = {
   0, 0, 0, 0, // stationary
-  0, 7, 8, 7, // up
-  0, 5, 6, 5, // down
-  0, 3, 4, 3, // left
-  0, 1, 2, 1  // right
+  0, 8, 7, 8, // up
+  0, 6, 5, 6, // down
+  0, 4, 3, 4, // left
+  0, 2, 1, 2  // right
 };
 
 
@@ -42,8 +42,9 @@ void Player::setup() {
 }
 
 void Player::reset() {
-  m_xpos = 14 * 16 + 8;
+  m_xpos = 14 * 16 + 1;
   m_ypos = 23 * 16 + 8;
+  m_start = true;
 }
 
 void Player::draw() {
@@ -63,8 +64,6 @@ void Player::draw() {
   }
 
 
-
-  
   m_graphics->draw_player( m_xpos - 16 + 179, m_ypos - 16 + 52, anim_sprites[ (m_dir << 2) + offset ]);
 
 //  int cx = m_xpos;
@@ -103,25 +102,33 @@ void Player::move() {
     }
   }
 
-  if( is_at_intersection() && can_move( m_want_dir ))
-    m_dir = m_want_dir;
+  
+  if( is_start() || (is_at_intersection() && can_move( m_want_dir ))) {
+    m_start = false;
+    m_dir   = m_want_dir;
+  }
   
 }
 
+bool Player::is_start() {
+
+  return m_start && (m_want_dir == AD_LEFT || m_want_dir == AD_RIGHT);
+}
+
 void Player::want_move_up() {
-  if(m_dir != AD_DOWN ) m_want_dir = AD_UP;
+  m_want_dir = AD_UP;
 }
 
 void Player::want_move_down() {
-  if(m_dir != AD_UP ) m_want_dir = AD_DOWN;
+  m_want_dir = AD_DOWN;
 }
 
 void Player::want_move_left() {
-  if(m_dir != AD_RIGHT ) m_want_dir = AD_LEFT;
+  m_want_dir = AD_LEFT;
 }
 
 void Player::want_move_right() {
-  if(m_dir != AD_LEFT ) m_want_dir = AD_RIGHT;
+  m_want_dir = AD_RIGHT;
 }
 
 int Player::pip_count() {

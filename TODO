@@ -16,9 +16,20 @@ todo :-
   * font
   * hud (player score, lives)
   * alignment
+
+* debug player animation
+* debug ghost cell mode
+- ghost scared graphics
+
 - death
 - score powerups
 - levels (increasing difficulty)
 
 - game over, game intro
 - high score, enter high score, reset high score, etc
+
+- sound
+  - synth
+  - on / off option
+  - pellet, death, intro music outro music
+

@@ -16,11 +16,14 @@ private:
   int m_want_dir;
 
   int m_step;
+  bool m_start;
   unsigned char m_delay;
 
   int m_pip_count;
   int m_lives;
   int m_score;
+  
+  bool is_start();
   
 public:
 
