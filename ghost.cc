@@ -277,29 +277,26 @@ void Ghost::move_scared() {
 
 void Ghost::move_eyes() {
 
-  if( !is_at_intersection() ) {
-    move_actor(m_dir);
-    return;
-  }
-
-  cout << "x=" << m_xpos << "  y=" << m_ypos << endl;
-
-  if( m_xpos == 232 ) {
-//    cout << "xxx" << endl;
-    if( m_ypos == 200 ) {
-//      cout << "yyy" << endl;
+  if( m_xpos == cell_mid_col ) {
+    if( m_ypos == cell_escape ) {
       m_dir = AD_DOWN;
       move_actor( m_dir );
       return;
     }
 
-    if( m_ypos == 232 ) {
+    if( m_ypos >= cell_floor ) {
       set_mode(GM_PARKED, 0);
       m_dir = AD_UP;
       return;
     }
-      
   }
+
+  if( !is_at_intersection() ) {
+    move_actor(m_dir);
+    return;
+  }
+
+
 
   int i = 0;
 
@@ -441,6 +438,8 @@ void Ghost::set_mode( int m, int h ) {
 }
 
 void Ghost::trigger_scared() {
+  if( m_mode == GM_PARKED || m_mode == GM_EYES ) return;
+
   set_mode(GM_SCARED, 1000);
 }
 
