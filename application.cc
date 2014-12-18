@@ -44,44 +44,44 @@ void Application::cleanup() {
 }
 
 void Application::move() {
+
+  if( m_player.is_dead() ) {
+
+    if( m_player.life_count() ) {
+      reset_actors();
+
+    } else {
+      cout << "You have no lives left" << endl;
+      exit(0);
+    }
+
+    return;
+  }
+
   m_player.move();
 
   if( m_player.pip_count() == m_board.pip_count() ) {
     cout << "you have all the pips" << endl;
     exit(0);
-  }
-
+  } 
 
   for( vector<Ghost>::iterator it = m_ghosts.begin(); it != m_ghosts.end(); it++ ) {
     it->move();
 
-/*     if( m_player.is_touching( *it )) {
- * 
- *       if( it->is_scared()) {
- *         it->trigger_eyes();
- * 
- *       } else {
- * 
- *         if( !it->is_eyes() ) {
- * 
- *           // TODO: death animation
- *           cout << "loses life" << endl;
- *           
- *           m_player.decrement_lives();
- *           if( m_player.life_count() ) {
- *           
- *             reset_actors();
- *           } else {
- *             cout << "You have no lives left" << endl;
- *             exit(0);
- * 
- *           }
- *         }
- * 
- *       }
- *     }
- */
+    if( m_player.is_touching( *it )) {
+
+      if( it->is_scared()) {
+        it->trigger_eyes();
+
+      } else {
+
+        if( !it->is_eyes() ) 
+          m_player.kill(); 
+
+      }
+    }
   }
+
 }
 
 void Application::scare_ghosts() {
@@ -156,6 +156,10 @@ void Application::on_key_down( int k ) {
 
        it->trigger_scared();
 
+     break;
+
+    case GLFW_KEY_K:
+     m_player.kill();
      break;
 
   }

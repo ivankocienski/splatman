@@ -16,11 +16,11 @@ const int Ghost::alt_ghost_dir_2[] = { Actor::AD_STATIONARY, Actor::AD_RIGHT,  A
 
 
 static const int cell_left_col  = 12 * 16 + 1;
-static const int cell_right_col = 16 * 16 + 1;
 static const int cell_mid_col   = 14 * 16 + 1;
-static const int cell_floor     = 15 * 16;
-static const int cell_cieling   = 14 * 16;
+static const int cell_right_col = 16 * 16 + 1;
 static const int cell_escape    = 11 * 16 + 8;
+static const int cell_cieling   = 14 * 16;
+static const int cell_floor     = 15 * 16;
 
 Ghost::Ghost( Board *b, Player *p, Graphics *g, int c ) : Actor() {
 
@@ -67,7 +67,8 @@ void Ghost::reset() {
 
 void Ghost::draw() {
 
-  
+  int sprite;
+  int color;
   int offset = 0;
 
   switch( m_dir ) {
@@ -82,34 +83,22 @@ void Ghost::draw() {
       break;
   }
 
-  m_graphics->draw_ghost( m_xpos - 16 + 179, m_ypos - 16 + 52, (m_dir-1) * 2 + offset, m_color );
+  if( m_mode == GM_SCARED ) {
 
+    color  = 4;
+    sprite = offset;
 
-/*   glBegin( GL_QUADS );
- * 
- *   if( m_mode == GM_SCARED ) {
- * 
- *     float v = 0;
- * 
- *     if(m_mode_hold < 200 && (m_mode_hold >> 4) & 1) {
- *       v = 1;
- *     } 
- * 
- *     glColor3f( v, v, 1 );
- * 
- *   } else
- *     glColor3f( ghost_color_r[m_color], ghost_color_g[m_color], ghost_color_b[m_color] );
- * 
- *   int cx = m_xpos;
- *   int cy = m_ypos;
- * 
- *   glVertex2f( cx - 8, cy - 8 );
- *   glVertex2f( cx + 8, cy - 8 );
- *   glVertex2f( cx + 8, cy + 8 );
- *   glVertex2f( cx - 8, cy + 8 );
- * 
- *   glEnd(); 
- */
+    if(m_mode_hold < 200 && (m_mode_hold >> 4) & 1) {
+      sprite += 2;
+    } 
+
+  } else { 
+    sprite = (m_dir-1) * 2 + offset;
+    color  = m_color;
+  }
+
+  m_graphics->draw_ghost( m_xpos - 16 + 179, m_ypos - 16 + 52, sprite, color );
+
 }
 
 // when in the little cell
@@ -158,43 +147,6 @@ void Ghost::move_parked() {
       break;
   }
   
-/*   if( m_mode_hold ) {
- *     m_mode_hold--;
- * 
- *     if( can_move( m_dir )) 
- *       move_actor( m_dir );
- *     else
- *       m_dir = m_dir == AD_UP ? AD_DOWN : AD_UP;
- * 
- *     return;
- *   }
- * 
- *   if( !is_at_intersection() ) {
- *     move_actor(m_dir);
- *     return;
- *   }
- * 
- *   switch( m_xpos ) {
- * 
- *     case 12 * 16 + 8: 
- *       m_dir = AD_RIGHT;
- *       break;
- * 
- *     case 14 * 16 + 1: 
- *       if( m_ypos <= 11 * 16 + 8 ) {
- *         m_dir  = (rand() & 1) ? AD_LEFT : AD_RIGHT;
- *         set_mode(GM_WANDER, 200);
- *         return;
- *       }
- *       m_dir = AD_UP;
- *       break;
- * 
- *     case 16 * 16 + 8: 
- *       m_dir = AD_LEFT;
- *       break;
- *   }
- */
-
   move_actor(m_dir);
 }
 

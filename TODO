@@ -19,9 +19,12 @@ todo :-
 
 * debug player animation
 * debug ghost cell mode
-- ghost scared graphics
+* ghost scared graphics
 
 - death
+  * player
+  - ghosts being eaten
+
 - score powerups
 - levels (increasing difficulty)
 
