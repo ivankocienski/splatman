@@ -154,7 +154,7 @@ void Application::on_key_down( int k ) {
 
      for( vector<Ghost>::iterator it = m_ghosts.begin(); it != m_ghosts.end(); it++ )
 
-       it->trigger_scared();
+       it->trigger_eyes();
 
      break;
 

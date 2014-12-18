@@ -83,18 +83,26 @@ void Ghost::draw() {
       break;
   }
 
-  if( m_mode == GM_SCARED ) {
+  switch( m_mode ) {
 
-    color  = 4;
-    sprite = offset;
+    case GM_EYES:
+      color = 4;
+      sprite = 4 + offset;
+      break;
 
-    if(m_mode_hold < 200 && (m_mode_hold >> 4) & 1) {
-      sprite += 2;
-    } 
+    case GM_SCARED:
+      color  = 4;
+      sprite = offset;
 
-  } else { 
-    sprite = (m_dir-1) * 2 + offset;
-    color  = m_color;
+      if(m_mode_hold < 200 && (m_mode_hold >> 4) & 1) {
+        sprite += 2;
+      } 
+      break;
+
+    default:
+      sprite = (m_dir-1) * 2 + offset;
+      color  = m_color;
+      break;
   }
 
   m_graphics->draw_ghost( m_xpos - 16 + 179, m_ypos - 16 + 52, sprite, color );
