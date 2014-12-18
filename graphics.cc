@@ -5,6 +5,17 @@
 
 #include "graphics.hh"
 
+// 42 glyphs
+static const int font_ascii[] = {
+  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
+  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
+  0, 40, 39, 41,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 37, 
+ 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37,  0,  0,  0,  0,  0, 
+  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 
+ 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,  0,  0,  0,  0,  0, 
+  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 
+ 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,  0,  0,  0,  0,  0
+};
 
 //static const char *file = "sprites.png";
 
@@ -83,6 +94,9 @@ bool Graphics::init() {
   m_ghosts = load_image( "ghosts.png" );
   if(!m_ghosts) return false;
 
+  m_font = load_image( "font.png" );
+  if(!m_font) return false;
+
   return true;
 }
 
@@ -92,6 +106,7 @@ void Graphics::cleanup() {
   if(m_misc)    glDeleteTextures( 1, &m_misc );
   if(m_player)  glDeleteTextures( 1, &m_player );
   if(m_ghosts)  glDeleteTextures( 1, &m_ghosts );
+  if(m_font)    glDeleteTextures( 1, &m_font );
 }
 
 void Graphics::draw_board( int x, int y ) {
@@ -174,6 +189,67 @@ void Graphics::draw_ghost( int x, int y, int n, int c ) {
   glTexCoord2d( dx*(n+1), dy*c);     glVertex2f( x+32, y    );
   glTexCoord2d( dx*(n+1), dy*(c+1)); glVertex2f( x+32, y+32 );
   glTexCoord2d( dx*n,     dy*(c+1)); glVertex2f(    x, y+32 );
+
+  glEnd();
+}
+
+void Graphics::draw_font_string( int x, int y, const char *c ) {
+
+  float d = 1.0 / 42;
+
+  glColor3f( 1, 1, 1 );
+  glBindTexture( GL_TEXTURE_2D, m_font );
+
+  glBegin( GL_QUADS );
+
+  while(*c) {
+
+    float dx = font_ascii[(unsigned char)*c] * d;
+
+    glTexCoord2d( dx,   0); glVertex2f(    x, y    );
+    glTexCoord2d( dx+d, 0); glVertex2f( x+16, y    );
+    glTexCoord2d( dx+d, 1); glVertex2f( x+16, y+16 );
+    glTexCoord2d( dx,   1); glVertex2f(    x, y+16 );
+
+    c++;
+    x += 16;
+  }
+
+  glEnd();
+}
+
+void Graphics::draw_font_number( int x, int y, int n ) {
+
+  float d = 1.0 / 42;
+
+  glColor3f( 1, 1, 1 );
+  glBindTexture( GL_TEXTURE_2D, m_font );
+
+  glBegin( GL_QUADS );
+
+  x -= 16;
+  if(!n) {
+
+    float dx = 27 * d;
+
+    glTexCoord2d( dx,   0); glVertex2f(    x, y    );
+    glTexCoord2d( dx+d, 0); glVertex2f( x+16, y    );
+    glTexCoord2d( dx+d, 1); glVertex2f( x+16, y+16 );
+    glTexCoord2d( dx,   1); glVertex2f(    x, y+16 );
+  }
+
+  while(n) {
+
+    float dx = ((n % 10) + 27) * d;
+
+    glTexCoord2d( dx,   0); glVertex2f(    x, y    );
+    glTexCoord2d( dx+d, 0); glVertex2f( x+16, y    );
+    glTexCoord2d( dx+d, 1); glVertex2f( x+16, y+16 );
+    glTexCoord2d( dx,   1); glVertex2f(    x, y+16 );
+
+    n /= 10;
+    x -= 16;
+  }
 
   glEnd();
 }

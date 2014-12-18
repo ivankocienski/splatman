@@ -10,6 +10,7 @@ private:
   GLuint m_misc;
   GLuint m_player;
   GLuint m_ghosts;
+  GLuint m_font;
 
   GLuint load_image(const char*);
 
@@ -26,4 +27,7 @@ public:
 
   void draw_player( int, int, int );
   void draw_ghost( int, int, int, int );
+
+  void draw_font_number( int, int, int );
+  void draw_font_string( int, int, const char* );
 };

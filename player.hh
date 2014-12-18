@@ -20,6 +20,7 @@ private:
 
   int m_pip_count;
   int m_lives;
+  int m_score;
   
 public:
 
@@ -45,4 +46,5 @@ public:
 
   void decrement_lives();
   int life_count();
+  int score();
 };

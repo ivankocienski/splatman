@@ -92,36 +92,29 @@ void Application::scare_ghosts() {
 void Application::draw() {
 
   glEnable(GL_TEXTURE_2D);
-  m_graphics.draw_board( 0, 0 );
+
+  m_graphics.draw_board( 179, 52 );
+
+  m_graphics.draw_font_string( 179, 0, "Game score" );
+  m_graphics.draw_font_number( 339, 16, m_player.score() );
+
+  m_graphics.draw_font_string( 467, 0, "High score" );
+  m_graphics.draw_font_number( 627, 16, 999999  );
+
+  for( int i = 0; i < m_player.life_count(); i++ ) {
+    m_graphics.draw_player( 179 + i * 32, 548, 4 );
+  }
   
   m_board.draw();
 
   m_player.draw();
+
 
   for( vector<Ghost>::iterator it = m_ghosts.begin(); it != m_ghosts.end(); it++ )
     it->draw();
 
   glDisable(GL_TEXTURE_2D);
 
-  m_pulse++;
-  if( (m_pulse >> 7 ) & 1 ) return;
-
-  if(m_okay)
-    glColor3f( 0, 1, 0 );
-  else
-    glColor3f( 1, 0, 0 );
-
-
-  glBegin( GL_LINE_LOOP );
-
-  float rx = m_curx * 16;
-  float ry = m_cury * 16;
-
-  glVertex2f( rx, ry );
-  glVertex2f( rx + 15, ry );
-  glVertex2f( rx + 15, ry + 15);
-  glVertex2f( rx, ry + 15);
-  glEnd();
 }
 
 void Application::on_mouse_down( ) {

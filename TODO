@@ -12,8 +12,10 @@ todo :-
   * board
   * pips and powerups
   * player
-  - ghosts
-  - hud (player score, lives)
+  * ghosts
+  * font
+  * hud (player score, lives)
+  * alignment
 - death
 - score powerups
 - levels (increasing difficulty)

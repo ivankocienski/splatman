@@ -60,7 +60,7 @@ void Board::draw() {
 //          break;
 
         case '.':
-          m_graphics->draw_pip( x << 4, y << 4 );
+          m_graphics->draw_pip( (x << 4) + 179, (y << 4) + 52 );
 //          glColor3f( 0.6, 0.6, 0.6 );
 //
 //          glVertex2f( cx - 2, cy - 2 );
@@ -70,7 +70,7 @@ void Board::draw() {
           break;
 
         case '*':
-          m_graphics->draw_pill( x << 4, y << 4 );
+          m_graphics->draw_pill( (x << 4) + 179, (y << 4) + 52 );
 //          glColor3f( 0.8, 0.8, 0.8 );
 //
 //          glVertex2f( cx - 5, cy - 5 );

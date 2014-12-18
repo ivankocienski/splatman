@@ -76,7 +76,7 @@ void Ghost::draw() {
       break;
   }
 
-  m_graphics->draw_ghost( m_xpos - 16, m_ypos - 16, (m_dir-1) * 2 + offset, m_color );
+  m_graphics->draw_ghost( m_xpos - 16 + 179, m_ypos - 16 + 52, (m_dir-1) * 2 + offset, m_color );
 
 
 /*   glBegin( GL_QUADS );

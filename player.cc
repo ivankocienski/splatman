@@ -36,6 +36,7 @@ void Player::setup() {
 
   m_pip_count = 0;
   m_lives = 3;
+  m_score    = 0;
 
   set_step( 10 );
 }
@@ -64,7 +65,7 @@ void Player::draw() {
 
 
   
-  m_graphics->draw_player( m_xpos - 16, m_ypos - 16, anim_sprites[ (m_dir << 2) + offset ]);
+  m_graphics->draw_player( m_xpos - 16 + 179, m_ypos - 16 + 52, anim_sprites[ (m_dir << 2) + offset ]);
 
 //  int cx = m_xpos;
 //  int cy = m_ypos;
@@ -198,6 +199,10 @@ void Player::decrement_lives() {
 
 int Player::life_count() {
   return m_lives;
+}
+
+int Player::score() {
+  return m_score;
 }
 
 #if 0
