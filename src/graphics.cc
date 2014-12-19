@@ -83,22 +83,22 @@ GLuint Graphics::load_image( const char *from ) {
 
 bool Graphics::init() {
 
-  m_board = load_image( "board.png" );
+  m_board = load_image( "data/board.png" );
   if(!m_board) return false;
 
-  m_misc  = load_image( "misc.png" );
+  m_misc  = load_image( "data/misc.png" );
   if(!m_misc) return false;
 
-  m_player = load_image( "player.png" );
+  m_player = load_image( "data/player.png" );
   if(!m_player) return false;
 
-  m_ghosts = load_image( "ghosts.png" );
+  m_ghosts = load_image( "data/ghosts.png" );
   if(!m_ghosts) return false;
 
-  m_font = load_image( "font.png" );
+  m_font = load_image( "data/font.png" );
   if(!m_font) return false;
 
-  m_score_graphics = load_image( "score-graphics.png" );
+  m_score_graphics = load_image( "data/score-graphics.png" );
   if(!m_score_graphics) return false;
 
   return true;
