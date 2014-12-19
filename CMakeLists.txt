@@ -23,6 +23,8 @@ set (SRC
   src/ghost.cc
   src/graphics.cc
   src/player.cc
+  src/mode-base.cc
+  src/round.cc
 )
 
 
@@ -36,6 +38,5 @@ link_libraries(
 add_executable(splatterman ${SRC} )
 
 add_custom_command(TARGET splatterman POST_BUILD 
-  COMMAND ln -sf ${CMAKE_SOURCE_DIR}/data
-  ${CMAKE_CURRENT_BINARY_DIR}/data COMMENT "linking data directory"
+  COMMAND ln -sf ${CMAKE_SOURCE_DIR}/data ${CMAKE_CURRENT_BINARY_DIR}/data COMMENT "linking data directory"
 )

@@ -8,7 +8,8 @@ using namespace std;
 
 #include "player.hh"
 #include "board.hh"
-#include "application.hh"
+#include "round.hh"
+#include "graphics.hh"
 
 static const int death_anim_duration = 150;
 
@@ -21,12 +22,12 @@ static const int anim_sprites[] = {
 };
 
 
-Player::Player( Application *a, Board *b, Graphics *g ) : Actor() {
+Player::Player( Round *r, Board *b, Graphics *g ) : Actor() {
 
   Actor::setup(b);
 
-  m_graphics    = g;
-  m_application = a;
+  m_graphics = g;
+  m_round    = r;
   
   m_want_dir = AD_STATIONARY;
 }
@@ -115,7 +116,7 @@ void Player::move() {
       }
 
       if( m_board->clear_pill( m_xpos, m_ypos )) {
-        m_application->scare_ghosts();
+        m_round->scare_ghosts();
         m_score += 50;
       }
     }
@@ -231,5 +232,5 @@ void Player::kill() {
 void Player::has_eaten_ghost( int s ) {
   m_score += s * 100;
 
-  m_application->spawn_score_graphic( m_xpos - 16, m_ypos, s );
+  m_round->spawn_score_graphic( m_xpos - 16, m_ypos, s );
 }

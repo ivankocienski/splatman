@@ -4,13 +4,13 @@
 #include "actor.hh"
 #include "ghost.hh"
 
-class Application;
+class Round;
 class Graphics;
 
 class Player : public Actor {
 private:
 
-  Application *m_application;
+  Round *m_round;
   Graphics *m_graphics;
 
   int m_want_dir;
@@ -33,7 +33,7 @@ public:
     PM_DEAD
   };
 
-  Player( Application*, Board*, Graphics* );
+  Player( Round*, Board*, Graphics* );
 
   void setup();
   void reset();
