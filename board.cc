@@ -39,53 +39,21 @@ void Board::draw() {
   int x;
   int y;
 
-
-  //glDisable( GL_TEXTURE_2D );
-//  glBegin( GL_QUADS );
-
   for( y = 0; y < 31; y++ )
     for( x = 0; x < 28; x++ ) {
 
-//      int cx = x * 16 + 8;
-//      int cy = y * 16 + 8;
-
       switch( *b) {
-//        case '#':
-//          glColor3f( 0, 0, 1 );
-//
-//          glVertex2f( cx - 8, cy - 8 );
-//          glVertex2f( cx + 8, cy - 8 );
-//          glVertex2f( cx + 8, cy + 8 );
-//          glVertex2f( cx - 8, cy + 8 );
-//          break;
-
         case '.':
           m_graphics->draw_pip( (x << 4) + 179, (y << 4) + 52 );
-//          glColor3f( 0.6, 0.6, 0.6 );
-//
-//          glVertex2f( cx - 2, cy - 2 );
-//          glVertex2f( cx + 2, cy - 2 );
-//          glVertex2f( cx + 2, cy + 2 );
-//          glVertex2f( cx - 2, cy + 2 );
           break;
 
         case '*':
           m_graphics->draw_pill( (x << 4) + 179, (y << 4) + 52 );
-//          glColor3f( 0.8, 0.8, 0.8 );
-//
-//          glVertex2f( cx - 5, cy - 5 );
-//          glVertex2f( cx + 5, cy - 5 );
-//          glVertex2f( cx + 5, cy + 5 );
-//          glVertex2f( cx - 5, cy + 5 );
           break;
       }
 
       b++;
     }
-      
-
-//  glEnd();
-  //glEnable( GL_TEXTURE_2D );
 }
 
 bool Board::actor_can_go( int x, int y ) {

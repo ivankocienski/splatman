@@ -111,11 +111,12 @@ void Player::move() {
     if( is_at_intersection() ) {
       if( m_board->clear_pip( m_xpos, m_ypos ) ) {
         m_pip_count++;
-        cout << "player: pip_count=" << m_pip_count << endl;
+        m_score += 10;
       }
 
       if( m_board->clear_pill( m_xpos, m_ypos )) {
         m_application->scare_ghosts();
+        m_score += 50;
       }
     }
   }
@@ -218,9 +219,17 @@ bool Player::is_dead() {
   return m_mode == PM_DEAD;
 }
 
+bool Player::is_dying() {
+  return m_mode == PM_DYING;
+}
+
 void Player::kill() {
   m_death_anim = death_anim_duration;
   m_mode = PM_DYING;
 }
 
+void Player::has_eaten_ghost( int s ) {
+  m_score += s * 100;
 
+  m_application->spawn_score_graphic( m_xpos - 16, m_ypos, s );
+}

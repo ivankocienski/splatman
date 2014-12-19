@@ -23,10 +23,13 @@ todo :-
 
 - death
   * player
-  - ghosts being eaten
+  * ghosts being eaten
 
-- score powerups
+* score powerups
 - levels (increasing difficulty)
+- actors should move 2 screen pixels at a time
+
+- debug ghost eye mode?
 
 - game over, game intro
 - high score, enter high score, reset high score, etc

@@ -24,6 +24,7 @@ Graphics::Graphics() {
   m_misc   = 0;
   m_player = 0;
   m_ghosts = 0;
+  m_score_graphics = 0;
 }
 
 
@@ -97,6 +98,9 @@ bool Graphics::init() {
   m_font = load_image( "font.png" );
   if(!m_font) return false;
 
+  m_score_graphics = load_image( "score-graphics.png" );
+  if(!m_score_graphics) return false;
+
   return true;
 }
 
@@ -107,6 +111,7 @@ void Graphics::cleanup() {
   if(m_player)  glDeleteTextures( 1, &m_player );
   if(m_ghosts)  glDeleteTextures( 1, &m_ghosts );
   if(m_font)    glDeleteTextures( 1, &m_font );
+  if(m_score_graphics) glDeleteTextures( 1, &m_score_graphics );
 }
 
 void Graphics::draw_board( int x, int y ) {
@@ -250,6 +255,21 @@ void Graphics::draw_font_number( int x, int y, int n ) {
     n /= 10;
     x -= 16;
   }
+
+  glEnd();
+}
+
+void Graphics::draw_score( int x, int y, int n ) {
+  float d = 1.0 / 4.0;
+
+  glBindTexture( GL_TEXTURE_2D, m_score_graphics );
+
+  glBegin( GL_QUADS );
+
+  glTexCoord2d( d*n,     0); glVertex2f(    x, y    );
+  glTexCoord2d( d*(n+1), 0); glVertex2f( x+32, y    );
+  glTexCoord2d( d*(n+1), 1); glVertex2f( x+32, y+32 );
+  glTexCoord2d( d*n,     1); glVertex2f(    x, y+32 );
 
   glEnd();
 }

@@ -11,6 +11,7 @@ private:
   GLuint m_player;
   GLuint m_ghosts;
   GLuint m_font;
+  GLuint m_score_graphics;
 
   GLuint load_image(const char*);
 
@@ -30,4 +31,6 @@ public:
 
   void draw_font_number( int, int, int );
   void draw_font_string( int, int, const char* );
+
+  void draw_score( int, int, int );
 };

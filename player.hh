@@ -53,9 +53,11 @@ public:
   int pip_count();
 
   int score();
+  void has_eaten_ghost( int );
 
   bool is_touching( Ghost& );
   void kill();
   bool is_dead();
+  bool is_dying();
   int  life_count();
 };

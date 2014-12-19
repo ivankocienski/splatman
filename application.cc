@@ -32,6 +32,9 @@ void Application::init() {
 
 void Application::reset_actors() {
   
+  m_score_multiplier = 2;
+
+  m_score_graphics.clear();
   m_player.reset();
 
   for( vector<Ghost>::iterator it = m_ghosts.begin(); it != m_ghosts.end(); it++ ) 
@@ -71,7 +74,8 @@ void Application::move() {
     if( m_player.is_touching( *it )) {
 
       if( it->is_scared()) {
-        it->trigger_eyes();
+        
+        eat_ghost( *it ); 
 
       } else {
 
@@ -82,6 +86,43 @@ void Application::move() {
     }
   }
 
+  for( list<ScoreGraphic>::iterator it = m_score_graphics.begin(); it != m_score_graphics.end(); ) {
+
+    it->move();
+
+    if( it->is_alive() ) {
+      it++;
+
+    } else {
+      it = m_score_graphics.erase(it);
+    }
+  }
+
+}
+
+void Application::eat_ghost( Ghost &g ) {
+
+  g.trigger_eyes();
+
+  m_player.has_eaten_ghost( m_score_multiplier );
+
+  bool any_scared = false;
+
+  for( vector<Ghost>::iterator it = m_ghosts.begin(); it != m_ghosts.end(); it++ ) {
+
+    if( !it->is_scared() ) continue;
+    any_scared = true;
+    break;
+  }
+
+  if( any_scared ) {
+    if( m_score_multiplier < 16 ) m_score_multiplier <<= 1;
+  } else
+    m_score_multiplier = 2;
+}
+
+void Application::spawn_score_graphic( int x, int y, int n ) {
+  m_score_graphics.push_front( ScoreGraphic( m_graphics, x, y, n ));
 }
 
 void Application::scare_ghosts() {
@@ -109,9 +150,14 @@ void Application::draw() {
   m_player.draw();
 
 
-  for( vector<Ghost>::iterator it = m_ghosts.begin(); it != m_ghosts.end(); it++ )
-    it->draw();
+  if( !m_player.is_dying() ) {
+    for( vector<Ghost>::iterator it = m_ghosts.begin(); it != m_ghosts.end(); it++ )
+      it->draw();
 
+    for( list<ScoreGraphic>::iterator it = m_score_graphics.begin(); it != m_score_graphics.end(); it++ ) {
+      it->draw();
+    }
+  }
 }
 
 void Application::on_mouse_down( ) {
@@ -165,6 +211,45 @@ void Application::on_key_down( int k ) {
   }
 }
 
-void Application::on_key_up( int k ) {
+void Application::on_key_up( int k ) { 
+}
 
+/* score graphics stuff */
+
+const int ScoreGraphic::s_step_size = 20;
+
+bool ScoreGraphic::is_alive() {
+  return m_count;
+}
+
+void ScoreGraphic::move() {
+
+  if(m_step) {
+    m_step--;
+    return;
+  }
+
+  m_step = s_step_size;
+
+  m_count--;
+  m_ypos--;
+}
+
+void ScoreGraphic::draw() {
+  m_graphics.draw_score( m_xpos + 179, m_ypos + 52, m_sprite );
+}
+
+ScoreGraphic::ScoreGraphic( Graphics &g, int x, int y, int n ) : m_graphics(g) {
+
+  m_xpos  = x;
+  m_ypos  = y;
+  m_count = 32;
+  m_step  = s_step_size;
+
+  switch(n) {
+    case  2: m_sprite = 0; break;
+    case  4: m_sprite = 1; break;
+    case  8: m_sprite = 2; break;
+    case 16: m_sprite = 3; break;
+  }
 }
