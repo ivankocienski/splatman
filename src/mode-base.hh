@@ -16,12 +16,12 @@ public:
   
   ModeBase( Application*, Graphics* );
 
-  virtual void activate() {}
+  virtual void activate();
  
-  virtual void on_key_down(int) {}
-  virtual void on_key_up(int) {}
+  virtual void on_key_down(int);
+  virtual void on_key_up(int);
 
-  virtual void move() {}
-  virtual void draw() {}
+  virtual void move();
+  virtual void draw();
 };
 

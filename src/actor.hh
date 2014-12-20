@@ -37,10 +37,10 @@ public:
 
   Actor();
 
-  virtual void setup( Board* );
+  void setup( Board* );
 
-  virtual void draw();
-  virtual void move();
+  void draw();
+  void move();
 
   int xpos();
   int ypos();

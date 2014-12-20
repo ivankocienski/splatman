@@ -25,6 +25,10 @@ void Round::init() {
   reset_actors();
 }
 
+void Round::activate() {
+  cout << "Round: activate()" << endl;
+}
+
 void Round::reset_actors() {
   
   m_score_multiplier = 2;

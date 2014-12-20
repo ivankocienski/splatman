@@ -33,6 +33,8 @@ public:
     PM_DEAD
   };
 
+  Player() {}
+
   Player( Round*, Board*, Graphics* );
 
   void setup();

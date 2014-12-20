@@ -14,6 +14,8 @@ private:
   
 public:
 
+  Board() {}
+
   Board(Graphics*);
 
   void reset();

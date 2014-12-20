@@ -35,19 +35,6 @@ public:
 };
 
 class Round : public ModeBase {
-private:
-
-  Board m_board;
-  Player m_player;
-  
-  int m_score_multiplier;
-  std::list<ScoreGraphic> m_score_graphics;
-
-  std::vector<Ghost> m_ghosts;
-
-  void reset_actors();
-  void eat_ghost( Ghost& );
-
 public:
 
   Round(Application*, Graphics*);
@@ -65,5 +52,18 @@ public:
 
   void scare_ghosts();
   void spawn_score_graphic( int, int, int ); 
+
+private:
+
+  Board m_board;
+  Player m_player;
+  
+  int m_score_multiplier;
+  std::list<ScoreGraphic> m_score_graphics;
+
+  std::vector<Ghost> m_ghosts;
+
+  void reset_actors();
+  void eat_ghost( Ghost& );
 };
 
