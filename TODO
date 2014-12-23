@@ -27,12 +27,17 @@ todo :-
 
 * score powerups
 * round micro hold / timed pause
-- levels (increasing difficulty)
-- actors should move 2 screen pixels at a time
+* levels (increasing difficulty)
+* actors should move 2 screen pixels at a time
+- bonus lives ( when score > 10,000 )
+- bonus things
 
-- debug ghost eye mode?
+- ugh. do scaling properly. render to texture and upscale.
 
-- game over, game intro
+x debug ghost eye mode?
+
+* game over
+- game intro
 - high score, enter high score, reset high score, etc
 
 - speed tuning

@@ -8,8 +8,8 @@ using namespace std;
 
 #include "board.hh"
 
-const int Actor::dir_xinc[] = { 0,  0, 0, -1, 1 };
-const int Actor::dir_yinc[] = { 0, -1, 1,  0, 0 };
+const int Actor::dir_xinc[] = { 0,  0, 0, -2, 2 };
+const int Actor::dir_yinc[] = { 0, -2, 2,  0, 0 };
 
 Actor::Actor() {
   m_xpos  = 0;

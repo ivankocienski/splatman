@@ -40,11 +40,11 @@ void Player::setup() {
   m_lives     = 3;
   m_score     = 0;
 
-  set_step( 10 );
+  set_step( 20 );
 }
 
 void Player::reset() {
-  m_xpos     = 14 * 16 + 1;
+  m_xpos     = 14 * 16 + 2;
   m_ypos     = 23 * 16 + 8;
   m_mode     = PM_START;
   m_want_dir = AD_STATIONARY;
@@ -161,7 +161,7 @@ bool Player::is_touching( Ghost &g ) {
   int dx = abs(m_xpos - g.xpos());
   int dy = abs(m_ypos - g.ypos());
 
-  return dx < 8 && dy < 8;
+  return dx < 16 && dy < 16;
 }
 
 int Player::relative_dir_from( int px, int py ) {

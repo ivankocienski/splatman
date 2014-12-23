@@ -15,9 +15,9 @@ const int Ghost::alt_ghost_dir_1[] = { Actor::AD_STATIONARY,  Actor::AD_LEFT, Ac
 const int Ghost::alt_ghost_dir_2[] = { Actor::AD_STATIONARY, Actor::AD_RIGHT,  Actor::AD_LEFT, Actor::AD_DOWN, Actor::AD_UP   };
 
 
-static const int cell_left_col  = 12 * 16 + 1;
-static const int cell_mid_col   = 14 * 16 + 1;
-static const int cell_right_col = 16 * 16 + 1;
+static const int cell_left_col  = 12 * 16 + 2;
+static const int cell_mid_col   = 14 * 16 + 2;
+static const int cell_right_col = 16 * 16 + 2;
 static const int cell_escape    = 11 * 16 + 8;
 static const int cell_cieling   = 14 * 16;
 static const int cell_floor     = 15 * 16;
@@ -423,20 +423,20 @@ void Ghost::set_mode( int m, int h ) {
 
   switch(m) { 
     case GM_PARKED:
-      set_step(25);
+      set_step(50);
       break;
 
     case GM_WANDER:
     case GM_HUNT:
-      set_step(10);
+      set_step(20);
       break;
 
     case GM_SCARED:
-      set_step(25);
+      set_step(50);
       break;
 
     case GM_EYES:
-      set_step(5);
+      set_step(10);
       break;
   }
 }
