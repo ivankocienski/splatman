@@ -39,6 +39,7 @@ public:
 
   Round(Application*, Graphics*);
 
+
   void set_round_number(int);
   void activate();
 
@@ -55,6 +56,12 @@ public:
 
 private:
 
+  enum { // freeze message
+    FM_NONE,
+    FM_READY,
+    FM_GAME_OVER
+  };
+
   Board m_board;
   Player m_player;
   
@@ -63,7 +70,14 @@ private:
 
   std::vector<Ghost> m_ghosts;
 
+  int m_freeze;
+  int m_freeze_message;
+
+  int m_ghost_wander_time;
+  int m_ghost_scare_time;
+
   void reset_actors();
+  void next_round();
   void eat_ghost( Ghost& );
 };
 

@@ -26,6 +26,7 @@ todo :-
   * ghosts being eaten
 
 * score powerups
+* round micro hold / timed pause
 - levels (increasing difficulty)
 - actors should move 2 screen pixels at a time
 

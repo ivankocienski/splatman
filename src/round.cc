@@ -7,12 +7,15 @@
 
 #include "graphics.hh"
 #include "round.hh"
+#include "application.hh"
 
 using namespace std;
 
 Round::Round(Application *a, Graphics *g) : ModeBase( a, g ), m_board( m_graphics ), m_player( this, &m_board, m_graphics ) {
 
   m_player.setup();
+  m_freeze = 0;
+  m_freeze_message = FM_NONE;
 }
 
 void Round::init() {
@@ -22,7 +25,10 @@ void Round::init() {
   m_ghosts.push_back( Ghost( &m_board, &m_player, m_graphics, Ghost::GC_PINK ));
   m_ghosts.push_back( Ghost( &m_board, &m_player, m_graphics, Ghost::GC_BLUE ));
 
-  reset_actors();
+  m_ghost_scare_time  = 1050;
+  m_ghost_wander_time = 1050;
+
+  next_round();
 }
 
 void Round::activate() {
@@ -37,30 +43,62 @@ void Round::reset_actors() {
   m_player.reset();
 
   for( vector<Ghost>::iterator it = m_ghosts.begin(); it != m_ghosts.end(); it++ ) 
-    it->reset();
+    it->reset(m_ghost_wander_time);
 }
 
+void Round::next_round() {
+
+  m_freeze = 700;
+  m_freeze_message = FM_READY;
+
+  m_ghost_wander_time -= 50;
+  m_ghost_scare_time  -= 50;
+
+  if( m_ghost_wander_time < 0 ) m_ghost_wander_time = 0;
+  if( m_ghost_scare_time  < 0 ) m_ghost_scare_time  = 0;
+
+  reset_actors();
+}
 void Round::move() {
 
-  if( m_player.is_dead() ) {
+  if( m_freeze ) {
+    m_freeze--;
 
-    if( m_player.life_count() ) {
-      reset_actors();
-
-    } else {
-      cout << "You have no lives left" << endl;
-      exit(0);
+    if(!m_freeze) {
+      if( m_freeze_message == FM_GAME_OVER ) {
+        // TODO: hi scores
+        m_application->set_mode( Application::AM_SPLASH );
+      }
+      m_freeze_message = FM_NONE;
     }
-
     return;
   }
 
   m_player.move();
 
+  if( m_player.is_dead() ) {
+
+    if( m_player.life_count() ) {
+      m_freeze = 700;
+      m_freeze_message = FM_READY;
+      reset_actors();
+
+    } else {
+      m_freeze = 1000;
+      m_freeze_message = FM_GAME_OVER;
+    }
+
+    return;
+  }
+
+
   if( m_player.pip_count() == m_board.pip_count() ) {
     cout << "you have all the pips" << endl;
-    exit(0);
+    next_round();
+    return;
   } 
+
+  if( m_player.is_dying() ) return;
 
   for( vector<Ghost>::iterator it = m_ghosts.begin(); it != m_ghosts.end(); it++ ) {
     it->move();
@@ -122,7 +160,7 @@ void Round::spawn_score_graphic( int x, int y, int n ) {
 void Round::scare_ghosts() {
 
   for( vector<Ghost>::iterator it = m_ghosts.begin(); it != m_ghosts.end(); it++ )
-    it->trigger_scared();
+    it->trigger_scared(m_ghost_scare_time);
 }
 
 void Round::draw() {
@@ -141,8 +179,17 @@ void Round::draw() {
   
   m_board.draw();
 
-  m_player.draw();
+  if( m_freeze ) {
 
+    switch(m_freeze_message) {
+      case FM_READY:     m_graphics->draw_font_string( 400-(6<<2),  17*16+52, "READY!"); break;
+      case FM_GAME_OVER: m_graphics->draw_font_string( 400-(10<<2), 17*16+52, "GAME OVER!"); break;
+    }
+
+    return;
+  } 
+
+  m_player.draw();
 
   if( !m_player.is_dying() ) {
     for( vector<Ghost>::iterator it = m_ghosts.begin(); it != m_ghosts.end(); it++ )

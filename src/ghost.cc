@@ -31,14 +31,16 @@ Ghost::Ghost( Board *b, Player *p, Graphics *g, int c ) : Actor() {
   m_color    = c;
 }
 
-void Ghost::reset() {
+void Ghost::reset( int wt ) {
+
+  m_wander_time = wt;
 
   switch(m_color) {
     case GC_RED:
       m_xpos = cell_mid_col;
       m_ypos = cell_escape;
       m_dir  = (rand() & 1) ? AD_LEFT : AD_RIGHT;
-      set_mode( GM_WANDER, 0);
+      set_mode( GM_WANDER, m_wander_time);
       break;
 
     case GC_YELLOW:
@@ -148,7 +150,7 @@ void Ghost::move_parked() {
     case cell_mid_col: 
       if( m_ypos <= cell_escape ) {
         m_dir  = (rand() & 1) ? AD_LEFT : AD_RIGHT;
-        set_mode(GM_WANDER, 200);
+        set_mode(GM_WANDER, m_wander_time );
         return;
       }
       m_dir = AD_UP;
@@ -180,7 +182,7 @@ void Ghost::move_wander() {
   } else {
 
     if( m_mode == GM_SCARED ) 
-      set_mode(GM_WANDER, 200);
+      set_mode(GM_WANDER, m_wander_time );
 
     else 
       set_mode(GM_HUNT, 0);
@@ -265,9 +267,11 @@ void Ghost::move_hunt() {
 
   // no, fallback to meandering around then...
   
-  cout << "go wander" << endl;
+  cout << "go wander. m_wander_time=" << m_wander_time << endl;
 
-  set_mode(GM_WANDER, 100 + rand() % 400);
+  int d = 100;
+  if( m_wander_time ) d += rand() % m_wander_time;
+  set_mode(GM_WANDER, d);
 }
 
 void Ghost::move_scared() {
@@ -437,10 +441,10 @@ void Ghost::set_mode( int m, int h ) {
   }
 }
 
-void Ghost::trigger_scared() {
+void Ghost::trigger_scared( int l) {
   if( m_mode == GM_PARKED || m_mode == GM_EYES ) return;
 
-  set_mode(GM_SCARED, 1000);
+  set_mode(GM_SCARED, l);
 }
 
 void Ghost::trigger_eyes() {

@@ -21,6 +21,7 @@ private:
 public:
 
   enum { // app modes
+    AM_SPLASH,
     AM_ROUND
   };
 

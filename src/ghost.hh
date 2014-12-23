@@ -23,12 +23,11 @@ private:
   static const int alt_ghost_dir_1[];
   static const int alt_ghost_dir_2[]; 
 
-  //int m_scared_count;
-
   int m_mode;
   int m_mode_hold;
   int m_color;
-
+  int m_wander_time;
+  
   bool behind_me(int);
 
   void move_parked();
@@ -49,12 +48,12 @@ public:
   };
 
   Ghost( Board*, Player*, Graphics*, int );
-  void reset();
+  void reset(int);
 
   void draw();
   void move();
 
-  void trigger_scared();
+  void trigger_scared(int);
   void trigger_eyes();
 
   bool is_scared();
