@@ -21,7 +21,8 @@ private:
   int m_score;
   int m_mode;
   int m_death_anim;
-
+  int m_bonus_score;
+  
   bool is_start();
   
 public:
@@ -42,7 +43,6 @@ public:
 
   void draw();
   void move();
-  //int  mode();
   
   void want_move_up();
   void want_move_down();
@@ -62,4 +62,5 @@ public:
   bool is_dead();
   bool is_dying();
   int  life_count();
+  bool has_score_bonused();
 };

@@ -29,16 +29,24 @@ todo :-
 * round micro hold / timed pause
 * levels (increasing difficulty)
 * actors should move 2 screen pixels at a time
-- bonus lives ( when score > 10,000 )
+* bonus lives ( when score > 10,000 )
 - bonus things
+* actors wrapping around the edges of the screen (black boxies)
 
-- ugh. do scaling properly. render to texture and upscale.
+? fix graphics
+  - have tiled background buffer that can be 'set up' and rendered over?
+  - ugh. do scaling properly. render to texture and upscale.
 
 x debug ghost eye mode?
 
 * game over
 - game intro
-- high score, enter high score, reset high score, etc
+
+- high score
+  * storage
+  * show
+  - enter high score
+  - reset 
 
 - speed tuning
 

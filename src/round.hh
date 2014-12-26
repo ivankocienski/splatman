@@ -4,7 +4,7 @@
 #include <vector>
 #include <list>
 
-class Graphics;
+class ScoreBoard;
 
 #include "mode-base.hh"
 
@@ -37,8 +37,7 @@ public:
 class Round : public ModeBase {
 public:
 
-  Round(Application*, Graphics*);
-
+  Round(Application*, Graphics*, ScoreBoard*);
 
   void set_round_number(int);
   void activate();
@@ -70,8 +69,11 @@ private:
 
   std::vector<Ghost> m_ghosts;
 
+  ScoreBoard *m_score_board;
+
   int m_freeze;
   int m_freeze_message;
+  int m_blink_score;
 
   int m_ghost_wander_time;
   int m_ghost_scare_time;

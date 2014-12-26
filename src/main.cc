@@ -58,7 +58,7 @@ int main(int argc, char ** argv ) {
 
   atexit(cleanup);
 
-  main_window = glfwCreateWindow(g_xres, g_yres, "app", NULL, NULL);
+  main_window = glfwCreateWindow(g_xres, g_yres, g_title, NULL, NULL);
 
   if(!main_window) {
     cerr << "could not create window" << endl;

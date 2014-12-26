@@ -36,9 +36,10 @@ void Player::setup() {
 
   reset();
 
-  m_pip_count = 0;
-  m_lives     = 3;
-  m_score     = 0;
+  m_pip_count   = 0;
+  m_lives       = 3;
+  m_score       = 0;
+  m_bonus_score = 10000;
 
   set_step( 20 );
 }
@@ -129,6 +130,16 @@ void Player::move() {
     m_dir   = m_want_dir;
   }
   
+}
+
+bool Player::has_score_bonused() {
+
+  if( m_score < m_bonus_score ) return false;
+
+  m_lives++;
+  m_bonus_score += 10000;
+
+  return true;
 }
 
 bool Player::is_start() {

@@ -7,6 +7,10 @@ class ModeBase;
 #include "mode-base.hh" 
 #include "round.hh"
 #include "graphics.hh"
+#include "splash-screen.hh"
+#include "score-board.hh"
+#include "show-scores.hh"
+#include "new-high-score.hh"
 
 class Application {
 private:
@@ -17,12 +21,19 @@ private:
 
   // application modes
   Round m_round;
+  SplashScreen m_splash_screen;
+  ShowScores m_show_scores;
+  NewHighScore m_new_high_score;
+
+  ScoreBoard m_score_board;
 
 public:
 
   enum { // app modes
     AM_SPLASH,
-    AM_ROUND
+    AM_ROUND,
+    AM_SHOW_SCORES,
+    AM_NEW_HIGH_SCORE
   };
 
   Application();

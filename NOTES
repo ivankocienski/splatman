@@ -1,0 +1,11 @@
+
+notes
+
+screen resolution is 800 x 600
+board is 28 x 31
+tiles are 8 x 8
+sprites are 16 x 16
+
+screen render scale is x2
+
+board offset on screen is 179 x 52

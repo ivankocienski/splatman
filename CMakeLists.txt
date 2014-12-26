@@ -28,6 +28,10 @@ set (SRC
   src/player.cc
   src/mode-base.cc
   src/round.cc
+  src/splash-screen.cc
+  src/show-scores.cc
+  src/score-board.cc
+  src/new-high-score.cc
 )
 
 
