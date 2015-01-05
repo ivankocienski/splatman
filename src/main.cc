@@ -1,11 +1,14 @@
 
+
 #include <iostream>
 
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
 #include <GL/gl.h>
+#include <GL/glu.h>
 #include <GLFW/glfw3.h>
 
 #include "application.hh"
@@ -19,6 +22,7 @@ const char *g_title = "splatterman";
 const int   g_xres  = 800; 
 const int   g_yres  = 600;
 
+static GLuint s_scale_texture = 0;
 
 static GLFWwindow* main_window = NULL;
 
@@ -40,7 +44,6 @@ static void cleanup() {
 int main(int argc, char ** argv ) {
 
   struct timespec ts;
-
 
 //  char buffer[200]; 
 //  float previous; 
@@ -85,11 +88,36 @@ int main(int argc, char ** argv ) {
   glClearColor(0.0, 0.0, 0.0, 0.0);
   glColor3f( 1, 1, 1 );
 
+  glGenTextures( 1, &s_scale_texture );
+  glBindTexture( GL_TEXTURE_2D, s_scale_texture );
+
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
+
+  glTexImage2D(
+    GL_TEXTURE_2D,
+    0,
+    GL_RGB,
+    224,
+    288,
+    0, // border
+    GL_RGB,
+    GL_UNSIGNED_BYTE,
+    0 
+  );
+  
   app.init();
 
 //  previous = glfwGetTime();
   ts.tv_sec  = 0;
   ts.tv_nsec = 50 * 1000;
+
+  int dx1 = g_xres / 2 - 224;
+  int dy1 = g_yres / 2 - 288;
+  int dx2 = g_xres / 2 + 224;
+  int dy2 = g_yres / 2 + 288;
 
   while(!glfwWindowShouldClose(main_window)) {
 
@@ -101,19 +129,37 @@ int main(int argc, char ** argv ) {
  *     glfwSetWindowTitle( main_window, buffer );
  */
     
-
-    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-
+    glLoadIdentity();
+    
     app.current_mode()->move();
 
+    // render game
+    glClear( GL_COLOR_BUFFER_BIT );
     app.current_mode()->draw();
+    
+    glFlush();
+
+    // copy to back buffer
+    glBindTexture( GL_TEXTURE_2D, s_scale_texture );
+    glCopyTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, 0, g_yres - 288, 224, 288, 0 );
+
+    glClear( GL_COLOR_BUFFER_BIT );
+
+    // scale and center ...
+    glBegin( GL_QUADS );
+
+    glTexCoord2d( 0, 1); glVertex2f( dx1, dy1 );
+    glTexCoord2d( 1, 1); glVertex2f( dx2, dy1 );
+    glTexCoord2d( 1, 0); glVertex2f( dx2, dy2 );
+    glTexCoord2d( 0, 0); glVertex2f( dx1, dy2 );
+
+    glEnd();
 
     glfwSwapBuffers(main_window);
     glfwPollEvents();
 
     nanosleep( &ts, NULL ); 
   }
-
 
   return 0;
 }

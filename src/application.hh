@@ -42,6 +42,8 @@ public:
   void cleanup();
 
   void set_mode( int );
+  
+  Graphics & graphics();
 
   ModeBase *current_mode();
 };

@@ -60,3 +60,7 @@ void Application::set_mode( int m ) {
 ModeBase *Application::current_mode() {
   return m_current_mode;
 }
+
+Graphics & Application::graphics() {
+  return m_graphics;
+}

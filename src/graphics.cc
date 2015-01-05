@@ -211,13 +211,13 @@ void Graphics::draw_font_string( int x, int y, const char *c ) {
 
     float dx = font_ascii[(unsigned char)*c] * d;
 
-    glTexCoord2d( dx,   0); glVertex2f(    x, y    );
-    glTexCoord2d( dx+d, 0); glVertex2f( x+16, y    );
-    glTexCoord2d( dx+d, 1); glVertex2f( x+16, y+16 );
-    glTexCoord2d( dx,   1); glVertex2f(    x, y+16 );
+    glTexCoord2d( dx,   0); glVertex2f(   x, y   );
+    glTexCoord2d( dx+d, 0); glVertex2f( x+8, y   );
+    glTexCoord2d( dx+d, 1); glVertex2f( x+8, y+8 );
+    glTexCoord2d( dx,   1); glVertex2f(   x, y+8 );
 
     c++;
-    x += 16;
+    x += 8;
   }
 
   glEnd();
