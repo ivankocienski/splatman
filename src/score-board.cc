@@ -1,4 +1,7 @@
 
+#include <iostream>
+using namespace std;
+
 #include <cstdio>
 #include <cstring>
 #include <time.h>
@@ -8,6 +11,7 @@
 const char* ScoreBoard::c_score_file = "scores.bin";
 
 ScoreBoard::ScoreBoard() {
+  m_new_position = -1;
   reset();
 }
 
@@ -70,10 +74,9 @@ void ScoreBoard::push_new_score( int ns ) {
 
   for( int i = 8; i > 0; i-- ) {
 
-    if( ns < m_scores[i].score ) continue;
+    if( ns > m_scores[i].score ) continue;
 
-    m_new_position = i; 
-
+    m_new_position = i+1; 
     break;
   }
 
@@ -88,7 +91,7 @@ void ScoreBoard::push_new_score( int ns ) {
   m_scores[m_new_position].score = ns;
   m_scores[m_new_position].day   = date->tm_mday;
   m_scores[m_new_position].month = date->tm_mon;
-  m_scores[m_new_position].year  = date->tm_year;
+  m_scores[m_new_position].year  = date->tm_year + 1900;
 }
 
 void ScoreBoard::set_new_name( char * nn ) {
@@ -98,4 +101,12 @@ void ScoreBoard::set_new_name( char * nn ) {
   m_scores[m_new_position].name[0] = nn[0];
   m_scores[m_new_position].name[1] = nn[1];
   m_scores[m_new_position].name[2] = nn[2];
+}
+
+int ScoreBoard::new_score_pos() {
+  return m_new_position;
+}
+
+void ScoreBoard::clear_new_score_pos() {
+  m_new_position = -1;
 }

@@ -36,5 +36,8 @@ public:
   void push_new_score(int);
   void set_new_name(char *);
   //void cancel_new_score();
+
+  int new_score_pos();
+  void clear_new_score_pos();
 };
 

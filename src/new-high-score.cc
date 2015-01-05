@@ -31,6 +31,46 @@ void NewHighScore::activate() {
 
 void NewHighScore::on_key_down(int k) {
 
+  if( k == GLFW_KEY_SPACE ) {
+
+    switch(m_cur_mode) {
+      case CM_CHAR:
+        m_name[m_name_pos] = char_palette[m_cur_pos];
+        if(m_name_pos < 2) 
+          m_name_pos++;
+        else
+          m_cur_mode = CM_OKAY;
+        break;
+
+      case CM_DELETE:
+        if(m_name_pos == 2) {
+          if(m_name[2])
+            m_name[2] = 0;
+          else {
+            m_name_pos--; 
+            m_name[m_name_pos] = 0;
+          }
+
+        } else {
+          if(m_name_pos) m_name_pos--;
+          m_name[m_name_pos] = 0;
+        }
+
+        break;
+
+      case CM_OKAY:
+        m_score_board->set_new_name(m_name);
+        m_score_board->save();
+        m_application->set_mode(Application::AM_SHOW_SCORES);
+        break;
+
+      case CM_CANCEL:
+        m_application->set_mode(Application::AM_SPLASH);
+        break;
+    }
+    return;
+  }
+
   switch(m_cur_mode) {
 
     case CM_CHAR:

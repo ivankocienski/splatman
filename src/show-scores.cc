@@ -14,17 +14,26 @@ void ShowScores::init() {
 }
 
 void ShowScores::activate() {
-  m_counter = 4000;
+  if(m_score_board->new_score_pos() != -1) {
+    m_counter = 20000;
+
+  } else
+    m_counter = 8000;
 }
 
 void ShowScores::on_key_down( int ) {
 }
 
 void ShowScores::move() {
+
+  m_anim_count++;
+
   if(m_counter) {
     m_counter--;
     return;
   }
+
+  m_score_board->clear_new_score_pos();
 
   m_application->set_mode( Application::AM_SPLASH );
 }
@@ -37,7 +46,11 @@ void ShowScores::draw() {
   m_graphics->draw_font_string( 0, 0, "HIGH SCORES" );
 
   int y = 16;
-  for(int i = 0; i < 10; i++) {
+  for( int i = 0; i < 10; i++, y += 16 ) {
+
+    if( m_score_board->new_score_pos() == i ) {
+      if( (m_anim_count >> 7 ) & 1 ) continue;
+    }
 
     m_score_board->date_at( i, date_buffer, 20 );
 
@@ -52,7 +65,6 @@ void ShowScores::draw() {
     );
 
     m_graphics->draw_font_string( 16, y, buffer );
-    y += 16;
   }
 }
 

@@ -45,8 +45,8 @@ x debug ghost eye mode?
 - high score
   * storage
   * show
-  - enter high score
-  - reset 
+  * enter high score
+  x reset 
 
 - speed tuning
 
@@ -55,3 +55,12 @@ x debug ghost eye mode?
   - on / off option
   - pellet, death, intro music outro music
 
+
+
+
+sprint finish
+=============
+
+- fix graphics
+- splash screen
+- audio

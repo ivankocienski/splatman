@@ -19,8 +19,10 @@ void Application::init() {
   //m_show_scores.init();
   //m_new_high_score.init();
 
-//  set_mode( AM_SPLASH );
-  set_mode( AM_NEW_HIGH_SCORE );
+  set_mode( AM_SPLASH );
+//  set_mode( AM_NEW_HIGH_SCORE );
+
+  m_score_board.push_new_score( 50000 );
 }
 
 void Application::cleanup() {

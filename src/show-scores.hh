@@ -11,7 +11,8 @@ private:
   ScoreBoard *m_score_board;
 
   int m_counter;
-
+  unsigned char m_anim_count;
+  
 public:
 
   ShowScores( Application*, Graphics*, ScoreBoard* );
