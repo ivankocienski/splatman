@@ -40,13 +40,11 @@ void Player::setup() {
   m_lives       = 3;
   m_score       = 0;
   m_bonus_score = 10000;
-
-  set_step( 20 );
 }
 
 void Player::reset() {
-  m_xpos     = 14 * 16 + 2;
-  m_ypos     = 23 * 16 + 8;
+  m_xpos     = 14 * 8 + 1;
+  m_ypos     = 23 * 8 + 4;
   m_mode     = PM_START;
   m_want_dir = AD_STATIONARY;
   m_dir      = AD_STATIONARY;
@@ -67,19 +65,19 @@ void Player::draw() {
     switch( m_dir ) {
       case AD_UP:
       case AD_DOWN:
-        offset = (m_ypos >> 3) & 3;
+        offset = (m_ypos >> 2) & 3;
         break;
 
       case AD_LEFT:
       case AD_RIGHT:
-        offset = (m_xpos >> 3) & 3;
+        offset = (m_xpos >> 2) & 3;
         break;
     }
 
     sprite = anim_sprites[ (m_dir << 2) + offset ];
   }
 
-  m_graphics->draw_player( m_xpos - 16 + 179, m_ypos - 16 + 52, sprite ); 
+  m_graphics->draw_player( m_xpos - 8, 16 + m_ypos - 8, sprite ); 
 }
 
 void Player::move() {
@@ -172,7 +170,7 @@ bool Player::is_touching( Ghost &g ) {
   int dx = abs(m_xpos - g.xpos());
   int dy = abs(m_ypos - g.ypos());
 
-  return dx < 16 && dy < 16;
+  return dx < 8 && dy < 8;
 }
 
 int Player::relative_dir_from( int px, int py ) {
@@ -243,5 +241,5 @@ void Player::kill() {
 void Player::has_eaten_ghost( int s ) {
   m_score += s * 100;
 
-  m_round->spawn_score_graphic( m_xpos - 16, m_ypos, s );
+  m_round->spawn_score_graphic( m_xpos - 8, m_ypos, s );
 }

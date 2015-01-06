@@ -15,12 +15,12 @@ const int Ghost::alt_ghost_dir_1[] = { Actor::AD_STATIONARY,  Actor::AD_LEFT, Ac
 const int Ghost::alt_ghost_dir_2[] = { Actor::AD_STATIONARY, Actor::AD_RIGHT,  Actor::AD_LEFT, Actor::AD_DOWN, Actor::AD_UP   };
 
 
-static const int cell_left_col  = 12 * 16 + 2;
-static const int cell_mid_col   = 14 * 16 + 2;
-static const int cell_right_col = 16 * 16 + 2;
-static const int cell_escape    = 11 * 16 + 8;
-static const int cell_cieling   = 14 * 16;
-static const int cell_floor     = 15 * 16;
+static const int cell_left_col  = 12 * 8 + 1;
+static const int cell_mid_col   = 14 * 8 + 1;
+static const int cell_right_col = 16 * 8 + 1;
+static const int cell_escape    = 11 * 8 + 4;
+static const int cell_cieling   = 14 * 8;
+static const int cell_floor     = 15 * 8;
 
 Ghost::Ghost( Board *b, Player *p, Graphics *g, int c ) : Actor() {
 
@@ -85,7 +85,7 @@ void Ghost::draw() {
         break;
     }
 
-    m_graphics->draw_ghost( m_xpos - 16 + 179, m_ypos - 16 + 52, offset + 4, 4 );
+    m_graphics->draw_ghost( m_xpos - 8, 16 + m_ypos - 8, offset + 4, 4 );
 
     return;
   }
@@ -120,7 +120,7 @@ void Ghost::draw() {
     color  = m_color;
   }
 
-  m_graphics->draw_ghost( m_xpos - 16 + 179, m_ypos - 16 + 52, sprite, color );
+  m_graphics->draw_ghost( m_xpos - 8, 16 + m_ypos - 8, sprite, color );
 
 
 }
@@ -322,9 +322,9 @@ void Ghost::move_eyes() {
 
 
 
-  if( m_ypos < 176 || m_ypos > 272 ) {
+  if( m_ypos < 88 || m_ypos > 136 ) {
 
-    if( m_ypos > 192 ) {
+    if( m_ypos > 96 ) {
       if( can_move( AD_UP )) {
         m_dir = AD_UP;
         move_actor(m_dir);
@@ -341,7 +341,7 @@ void Ghost::move_eyes() {
 
     if( m_dir == AD_UP || m_dir == AD_DOWN ) {
 
-      if( m_xpos > 224 ) {
+      if( m_xpos > 112 ) {
         if( can_move( AD_LEFT ))  m_dir = AD_LEFT;  else m_dir = AD_RIGHT;
 
       } else {
@@ -356,7 +356,7 @@ void Ghost::move_eyes() {
 
 
 
-  if( m_xpos > 224 ) {
+  if( m_xpos > 112 ) {
     if( can_move( AD_LEFT )) {
       m_dir = AD_LEFT;
       move_actor(m_dir);
@@ -371,7 +371,7 @@ void Ghost::move_eyes() {
     }
   }
 
-  if( m_ypos > 192 ) {
+  if( m_ypos > 96 ) {
     if( can_move( AD_UP  ))  m_dir = AD_UP;  else m_dir = AD_DOWN;
 
   } else {
@@ -423,20 +423,20 @@ void Ghost::set_mode( int m, int h ) {
 
   switch(m) { 
     case GM_PARKED:
-      set_step(50);
+      set_step(2); // 50
       break;
 
     case GM_WANDER:
     case GM_HUNT:
-      set_step(20);
+      set_step(1); // 20
       break;
 
     case GM_SCARED:
-      set_step(50);
+      set_step(2); // 50
       break;
 
     case GM_EYES:
-      set_step(10);
+      set_step(0); // 10
       break;
   }
 }

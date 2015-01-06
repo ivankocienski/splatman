@@ -5,6 +5,7 @@ using namespace std;
 #include <cstring>
 #include <GLFW/glfw3.h>
 
+#include "common.hh"
 #include "new-high-score.hh"
 
 #include "application.hh"
@@ -170,26 +171,24 @@ void NewHighScore::draw() {
   x = 2;
   m_graphics->draw_font_string( x * 16 + 32, y * 32 + 64, m_name );
 
-  if((m_anim_count >> 7 ) & 1) {
+  if((g_anim >> 7 ) & 1) {
     m_graphics->draw_font_string( (x + m_name_pos) * 16 + 32, y * 32 + 64, "#" );
   }
 }
 
-void NewHighScore::move() {
-  m_anim_count++;
-}
+void NewHighScore::move() { }
 
 bool NewHighScore::should_draw_char( int t ) {
   if( m_cur_mode != CM_CHAR ) return true;
 
   if( m_cur_pos != t ) return true;
 
-  return (m_anim_count >> 7 ) & 1;
+  return (g_anim >> 7 ) & 1;
 }
 
 bool NewHighScore::should_draw_mode( int t ) {
   if( m_cur_mode != t ) return true;
 
-  return (m_anim_count >> 7 ) & 1;
+  return (g_anim >> 7 ) & 1;
 }
 

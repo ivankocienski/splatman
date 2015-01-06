@@ -15,7 +15,6 @@ private:
   int m_name_pos;
   int m_cur_pos;
   int m_cur_mode;
-  unsigned char m_anim_count;
 
   bool should_draw_char(int);
   bool should_draw_mode(int);

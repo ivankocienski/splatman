@@ -1,4 +1,9 @@
 
+#include <string.h>
+
+#include <GLFW/glfw3.h>
+
+#include "common.hh"
 #include "splash-screen.hh"
 #include "graphics.hh"
 #include "application.hh"
@@ -11,16 +16,34 @@ void SplashScreen::init() {
 
 void SplashScreen::activate() {
 
-  m_counter = 4000;
+  m_counter = 500;
 }
 
-void SplashScreen::on_key_down(int) {
+void SplashScreen::on_key_down(int k) {
 
+  if( k == GLFW_KEY_SPACE ) 
+    m_application->set_mode( Application::AM_ROUND );
+}
+
+void SplashScreen::center( int y, const char *s ) {
+  int x = 112 - strlen(s) * 4;
+
+  m_graphics->draw_font_string( x, y, s );
 }
 
 void SplashScreen::draw() {
 
-  m_graphics->draw_font_string( 0, 0, "Splatterman" );
+  for( int i = 0; i < 8; i++ ) {
+    m_graphics->draw_logo( 48 + i * 16, 64, i );
+  }
+
+  center( 128, "By Ivan Kocienski." );
+  center( 144, "$ 2015" );
+
+  center( 180, "Original Game by Namco" );
+
+  if( (g_anim >> 5) & 1 ) 
+    center( 280, "PRESS SPACEBAR TO START.");
 }
 
 void SplashScreen::move() {

@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 
+#include "common.hh"
 #include "show-scores.hh"
 #include "score-board.hh"
 #include "application.hh"
@@ -26,8 +27,6 @@ void ShowScores::on_key_down( int ) {
 
 void ShowScores::move() {
 
-  m_anim_count++;
-
   if(m_counter) {
     m_counter--;
     return;
@@ -49,7 +48,7 @@ void ShowScores::draw() {
   for( int i = 0; i < 10; i++, y += 16 ) {
 
     if( m_score_board->new_score_pos() == i ) {
-      if( (m_anim_count >> 7 ) & 1 ) continue;
+      if( (g_anim >> 7 ) & 1 ) continue;
     }
 
     m_score_board->date_at( i, date_buffer, 20 );

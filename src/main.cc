@@ -12,9 +12,11 @@
 #include <GLFW/glfw3.h>
 
 #include "application.hh"
-
+#include "common.hh"
 
 using namespace std;
+
+byte g_anim = 0;
 
 static Application app;
 
@@ -159,6 +161,8 @@ int main(int argc, char ** argv ) {
     glfwPollEvents();
 
     nanosleep( &ts, NULL ); 
+
+    g_anim++;
   }
 
   return 0;

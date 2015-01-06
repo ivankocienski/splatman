@@ -44,11 +44,11 @@ void Board::draw() {
 
       switch( *b) {
         case '.':
-          m_graphics->draw_pip( (x << 4) + 179, (y << 4) + 52 );
+          m_graphics->draw_pip( (x << 3), (y << 3) + 16 );
           break;
 
         case '*':
-          m_graphics->draw_pill( (x << 4) + 179, (y << 4) + 52 );
+          m_graphics->draw_pill( (x << 3), (y << 3) + 16 );
           break;
       }
 
@@ -58,8 +58,8 @@ void Board::draw() {
 
 bool Board::actor_can_go( int x, int y ) {
 
-  x >>= 4;
-  y >>= 4;
+  x >>= 3;
+  y >>= 3;
 
   // the mid map warp points hack
   if( y == 14 ) {
@@ -78,8 +78,8 @@ bool Board::actor_can_go( int x, int y ) {
 
 int Board::clear_pip( int x, int y ) {
 
-  x >>= 4;
-  y >>= 4;
+  x >>= 3;
+  y >>= 3;
 
   if(x < 0 || x > 28) return 0;
   if(y < 0 || y > 31) return 0;
@@ -96,8 +96,8 @@ int Board::clear_pip( int x, int y ) {
 
 int Board::clear_pill( int x, int y ) {
 
-  x >>= 4;
-  y >>= 4;
+  x >>= 3;
+  y >>= 3;
 
   if(x < 0 || x > 28) return 0;
   if(y < 0 || y > 31) return 0;

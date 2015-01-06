@@ -8,8 +8,8 @@ using namespace std;
 
 #include "board.hh"
 
-const int Actor::dir_xinc[] = { 0,  0, 0, -2, 2 };
-const int Actor::dir_yinc[] = { 0, -2, 2,  0, 0 };
+const int Actor::dir_xinc[] = { 0,  0, 0, -1, 1 };
+const int Actor::dir_yinc[] = { 0, -1, 1,  0, 0 };
 
 Actor::Actor() {
   m_xpos  = 0;
@@ -20,18 +20,18 @@ Actor::Actor() {
 
 bool Actor::is_at_intersection( ) {
 
-  int mx = m_xpos & 15;
-  int my = m_ypos & 15;
+  int mx = m_xpos & 7;
+  int my = m_ypos & 7;
 
-  return mx == 8 && my == 8;
+  return mx == 4 && my == 4;
 }
 
 bool Actor::can_move( int d ) {
   
   if( !is_at_intersection() ) return true;
 
-  int xm = d == AD_LEFT ? 9 : 8;
-  int ym = d == AD_UP   ? 9 : 8;
+  int xm = d == AD_LEFT ? 5 : 4;
+  int ym = d == AD_UP   ? 5 : 4;
 
   int nx = m_xpos + dir_xinc[d] * xm;
   int ny = m_ypos + dir_yinc[d] * ym;
@@ -49,12 +49,16 @@ void Actor::move() { }
 
 bool Actor::step_0() {
 
-  if( m_step_counter ) {
-    m_step_counter--;
-    return false;
+  if( m_step ) {
+
+    if( m_step_counter ) {
+      m_step_counter--;
+      return false;
+    }
+
+    m_step_counter = m_step;
   }
 
-  m_step_counter = m_step;
   return true; 
 }
 
@@ -68,9 +72,9 @@ void Actor::move_actor( int d ) {
   m_ypos += dir_yinc[d];
 
   // mid map warp points hack
-  if(m_ypos == 14 * 16 + 8) {
-    if( m_xpos < -16 )    m_xpos += 30 * 16;
-    if( m_xpos >= 29 * 16) m_xpos -= 29 * 16;
+  if(m_ypos == 14 * 8 + 4) {
+    if( m_xpos <  -8 )    m_xpos += 30 * 8;
+    if( m_xpos >= 29 * 8) m_xpos -= 29 * 8;
   }
 }
 

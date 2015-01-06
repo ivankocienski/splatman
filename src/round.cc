@@ -53,7 +53,7 @@ void Round::reset_actors() {
 
 void Round::next_round() {
 
-  m_freeze = 700;
+  m_freeze = 80;
   m_freeze_message = FM_READY;
   m_blink_score    = 0;
 
@@ -85,12 +85,12 @@ void Round::move() {
   if( m_player.is_dead() ) {
 
     if( m_player.life_count() ) {
-      m_freeze = 700;
+      m_freeze = 80;
       m_freeze_message = FM_READY;
       reset_actors();
 
     } else {
-      m_freeze = 1000;
+      m_freeze = 200;
       m_freeze_message = FM_GAME_OVER;
     }
 
@@ -174,23 +174,23 @@ void Round::scare_ghosts() {
 
 void Round::draw() {
 
-  m_graphics->draw_board( 179, 52 );
+  m_graphics->draw_board( 0, 16 );
 
-  m_graphics->draw_font_string( 179, 0, "Game score" );
+  m_graphics->draw_font_string( 0, 0, "Game score" );
   if(m_blink_score) {
 
     m_blink_score--;
     if( (m_blink_score >> 5) & 1)
-      m_graphics->draw_font_number( 339, 16, m_player.score() );
+      m_graphics->draw_font_number( 79, 8, m_player.score() );
 
   } else
-    m_graphics->draw_font_number( 339, 16, m_player.score() );
+    m_graphics->draw_font_number( 79, 8, m_player.score() );
 
-  m_graphics->draw_font_string( 467, 0, "High score" );
-  m_graphics->draw_font_number( 627, 16, 999999  );
+  m_graphics->draw_font_string( 144, 0, "High score" );
+  m_graphics->draw_font_number( 224, 8, 999999  );
 
   for( int i = 0; i < m_player.life_count(); i++ ) {
-    m_graphics->draw_player( 179 + i * 32, 548, 4 );
+    m_graphics->draw_player( i * 16, 274, 4 );
   }
   
   m_board.draw();
@@ -198,8 +198,8 @@ void Round::draw() {
   if( m_freeze ) {
 
     switch(m_freeze_message) {
-      case FM_READY:     m_graphics->draw_font_string( 400-(6<<2),  17*16+52, "READY!"); break;
-      case FM_GAME_OVER: m_graphics->draw_font_string( 400-(10<<2), 17*16+52, "GAME OVER!"); break;
+      case FM_READY:     m_graphics->draw_font_string( 104-(6<<1),  17*8+16, "READY!"); break;
+      case FM_GAME_OVER: m_graphics->draw_font_string( 104-(10<<1), 17*8+16, "GAME OVER!"); break;
     }
 
     return;
@@ -218,8 +218,8 @@ void Round::draw() {
 
   // little hack to block out actors when they wrap
   // around on the edges of the map
-  m_graphics->draw_ghost( 627, 16 * 16 + 9, 7, 4 );
-  m_graphics->draw_ghost( 147, 16 * 16 + 9, 7, 4 );
+  //m_graphics->draw_ghost( 627, 16 * 16 + 9, 7, 4 );
+  //m_graphics->draw_ghost( 147, 16 * 16 + 9, 7, 4 );
 }
 
 void Round::on_key_down( int k ) {
@@ -268,7 +268,7 @@ void ScoreGraphic::move() {
 }
 
 void ScoreGraphic::draw() {
-  m_graphics->draw_score( m_xpos + 179, m_ypos + 52, m_sprite );
+  m_graphics->draw_score( m_xpos, m_ypos + 16, m_sprite );
 }
 
 ScoreGraphic::ScoreGraphic( Graphics *g, int x, int y, int n ) {

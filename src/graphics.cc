@@ -25,6 +25,7 @@ Graphics::Graphics() {
   m_player = 0;
   m_ghosts = 0;
   m_score_graphics = 0;
+  m_logo   = 0;
 }
 
 
@@ -101,6 +102,9 @@ bool Graphics::init() {
   m_score_graphics = load_image( "data/score-graphics.png" );
   if(!m_score_graphics) return false;
 
+  m_logo = load_image( "data/logo.png" );
+  if(!m_logo) return false;
+
   return true;
 }
 
@@ -112,6 +116,7 @@ void Graphics::cleanup() {
   if(m_ghosts)  glDeleteTextures( 1, &m_ghosts );
   if(m_font)    glDeleteTextures( 1, &m_font );
   if(m_score_graphics) glDeleteTextures( 1, &m_score_graphics );
+  if(m_logo)    glDeleteTextures( 1, &m_logo );
 }
 
 void Graphics::draw_board( int x, int y ) {
@@ -122,9 +127,9 @@ void Graphics::draw_board( int x, int y ) {
   glBegin( GL_QUADS );
 
   glTexCoord2d( 0, 0); glVertex2f(     x, y     );
-  glTexCoord2d( 1, 0); glVertex2f( x+448, y     );
-  glTexCoord2d( 1, 1); glVertex2f( x+448, y+496 );
-  glTexCoord2d( 0, 1); glVertex2f(     x, y+496 );
+  glTexCoord2d( 1, 0); glVertex2f( x+224, y     );
+  glTexCoord2d( 1, 1); glVertex2f( x+224, y+248 );
+  glTexCoord2d( 0, 1); glVertex2f(     x, y+248 );
 
   glEnd();
 }
@@ -138,10 +143,10 @@ void Graphics::draw_pip(int x, int y) {
 
   glBegin( GL_QUADS );
 
-  glTexCoord2d( 0, 0); glVertex2f(    x, y    );
-  glTexCoord2d( d, 0); glVertex2f( x+16, y    );
-  glTexCoord2d( d, 1); glVertex2f( x+16, y+16 );
-  glTexCoord2d( 0, 1); glVertex2f(    x, y+16 );
+  glTexCoord2d( 0, 0); glVertex2f(   x, y   );
+  glTexCoord2d( d, 0); glVertex2f( x+8, y   );
+  glTexCoord2d( d, 1); glVertex2f( x+8, y+8 );
+  glTexCoord2d( 0, 1); glVertex2f(   x, y+8 );
 
   glEnd();
 }
@@ -155,10 +160,10 @@ void Graphics::draw_pill(int x, int y) {
 
   glBegin( GL_QUADS );
 
-  glTexCoord2d( d*1, 0); glVertex2f(    x, y    );
-  glTexCoord2d( d*2, 0); glVertex2f( x+16, y    );
-  glTexCoord2d( d*2, 1); glVertex2f( x+16, y+16 );
-  glTexCoord2d( d*1, 1); glVertex2f(    x, y+16 );
+  glTexCoord2d( d*1, 0); glVertex2f(   x, y   );
+  glTexCoord2d( d*2, 0); glVertex2f( x+8, y   );
+  glTexCoord2d( d*2, 1); glVertex2f( x+8, y+8 );
+  glTexCoord2d( d*1, 1); glVertex2f(   x, y+8 );
 
   glEnd();
 }
@@ -173,9 +178,26 @@ void Graphics::draw_player( int x, int y, int n ) {
   glBegin( GL_QUADS );
 
   glTexCoord2d( d*n,     0); glVertex2f(    x, y    );
-  glTexCoord2d( d*(n+1), 0); glVertex2f( x+32, y    );
-  glTexCoord2d( d*(n+1), 1); glVertex2f( x+32, y+32 );
-  glTexCoord2d( d*n,     1); glVertex2f(    x, y+32 );
+  glTexCoord2d( d*(n+1), 0); glVertex2f( x+16, y    );
+  glTexCoord2d( d*(n+1), 1); glVertex2f( x+16, y+16 );
+  glTexCoord2d( d*n,     1); glVertex2f(    x, y+16 );
+
+  glEnd();
+}
+
+void Graphics::draw_logo( int x, int y, int n ) {
+
+  float d = 1.0 / 8.0;
+
+//  glColor3f( 1, 1, 1 );
+  glBindTexture( GL_TEXTURE_2D, m_logo );
+
+  glBegin( GL_QUADS );
+
+  glTexCoord2d( d*n,     0); glVertex2f(    x, y    );
+  glTexCoord2d( d*(n+1), 0); glVertex2f( x+16, y    );
+  glTexCoord2d( d*(n+1), 1); glVertex2f( x+16, y+16 );
+  glTexCoord2d( d*n,     1); glVertex2f(    x, y+16 );
 
   glEnd();
 }
@@ -191,9 +213,9 @@ void Graphics::draw_ghost( int x, int y, int n, int c ) {
   glBegin( GL_QUADS );
 
   glTexCoord2d( dx*n,     dy*c);     glVertex2f(    x, y    );
-  glTexCoord2d( dx*(n+1), dy*c);     glVertex2f( x+32, y    );
-  glTexCoord2d( dx*(n+1), dy*(c+1)); glVertex2f( x+32, y+32 );
-  glTexCoord2d( dx*n,     dy*(c+1)); glVertex2f(    x, y+32 );
+  glTexCoord2d( dx*(n+1), dy*c);     glVertex2f( x+16, y    );
+  glTexCoord2d( dx*(n+1), dy*(c+1)); glVertex2f( x+16, y+16 );
+  glTexCoord2d( dx*n,     dy*(c+1)); glVertex2f(    x, y+16 );
 
   glEnd();
 }
@@ -232,28 +254,28 @@ void Graphics::draw_font_number( int x, int y, int n ) {
 
   glBegin( GL_QUADS );
 
-  x -= 16;
+  x -= 8;
   if(!n) {
 
     float dx = 27 * d;
 
-    glTexCoord2d( dx,   0); glVertex2f(    x, y    );
-    glTexCoord2d( dx+d, 0); glVertex2f( x+16, y    );
-    glTexCoord2d( dx+d, 1); glVertex2f( x+16, y+16 );
-    glTexCoord2d( dx,   1); glVertex2f(    x, y+16 );
+    glTexCoord2d( dx,   0); glVertex2f(   x, y   );
+    glTexCoord2d( dx+d, 0); glVertex2f( x+8, y   );
+    glTexCoord2d( dx+d, 1); glVertex2f( x+8, y+8 );
+    glTexCoord2d( dx,   1); glVertex2f(   x, y+8 );
   }
 
   while(n) {
 
     float dx = ((n % 10) + 27) * d;
 
-    glTexCoord2d( dx,   0); glVertex2f(    x, y    );
-    glTexCoord2d( dx+d, 0); glVertex2f( x+16, y    );
-    glTexCoord2d( dx+d, 1); glVertex2f( x+16, y+16 );
-    glTexCoord2d( dx,   1); glVertex2f(    x, y+16 );
+    glTexCoord2d( dx,   0); glVertex2f(   x, y   );
+    glTexCoord2d( dx+d, 0); glVertex2f( x+8, y   );
+    glTexCoord2d( dx+d, 1); glVertex2f( x+8, y+8 );
+    glTexCoord2d( dx,   1); glVertex2f(   x, y+8 );
 
     n /= 10;
-    x -= 16;
+    x -= 8;
   }
 
   glEnd();
@@ -267,9 +289,9 @@ void Graphics::draw_score( int x, int y, int n ) {
   glBegin( GL_QUADS );
 
   glTexCoord2d( d*n,     0); glVertex2f(    x, y    );
-  glTexCoord2d( d*(n+1), 0); glVertex2f( x+32, y    );
-  glTexCoord2d( d*(n+1), 1); glVertex2f( x+32, y+32 );
-  glTexCoord2d( d*n,     1); glVertex2f(    x, y+32 );
+  glTexCoord2d( d*(n+1), 0); glVertex2f( x+16, y    );
+  glTexCoord2d( d*(n+1), 1); glVertex2f( x+16, y+16 );
+  glTexCoord2d( d*n,     1); glVertex2f(    x, y+16 );
 
   glEnd();
 }
