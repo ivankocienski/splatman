@@ -61,8 +61,15 @@ x debug ghost eye mode?
 sprint finish
 =============
 
-- fix graphics
-- splash screen
+* fix graphics
+* splash screen
+  - animation
+- score board toggling
 - audio
-
+- fix complete / next round progression
+- speed tuning
+  - up framerate ( 30fps? 60fps? )
+- score system
+  - high score blinking in game when can get onto score board
+  - enter high score bit
 

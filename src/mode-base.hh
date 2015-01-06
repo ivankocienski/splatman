@@ -14,6 +14,7 @@ protected:
   AudioService *m_audio;
 
   void set_mode(int);
+  void center( int, const char* );
 
 public:
   

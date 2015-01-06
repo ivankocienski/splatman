@@ -16,10 +16,10 @@ void ShowScores::init() {
 
 void ShowScores::activate() {
   if(m_score_board->new_score_pos() != -1) {
-    m_counter = 20000;
+    m_counter = 1000;
 
   } else
-    m_counter = 8000;
+    m_counter = 500;
 }
 
 void ShowScores::on_key_down( int ) {
@@ -42,13 +42,13 @@ void ShowScores::draw() {
   char buffer[64];
   char date_buffer[20];
 
-  m_graphics->draw_font_string( 0, 0, "HIGH SCORES" );
+  center( 8, "HIGH  SCORES" );
 
-  int y = 16;
+  int y = 48;
   for( int i = 0; i < 10; i++, y += 16 ) {
 
     if( m_score_board->new_score_pos() == i ) {
-      if( (g_anim >> 7 ) & 1 ) continue;
+      if( (g_anim >> 3 ) & 1 ) continue;
     }
 
     m_score_board->date_at( i, date_buffer, 20 );
@@ -65,5 +65,8 @@ void ShowScores::draw() {
 
     m_graphics->draw_font_string( 16, y, buffer );
   }
+  
+  if( (g_anim >> 5) & 1 ) 
+    center( 280, "PRESS SPACEBAR TO START.");
 }
 

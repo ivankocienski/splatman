@@ -1,5 +1,4 @@
 
-#include <string.h>
 
 #include <GLFW/glfw3.h>
 
@@ -25,11 +24,6 @@ void SplashScreen::on_key_down(int k) {
     m_application->set_mode( Application::AM_ROUND );
 }
 
-void SplashScreen::center( int y, const char *s ) {
-  int x = 112 - strlen(s) * 4;
-
-  m_graphics->draw_font_string( x, y, s );
-}
 
 void SplashScreen::draw() {
 

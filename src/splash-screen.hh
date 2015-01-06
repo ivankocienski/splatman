@@ -11,8 +11,6 @@ private:
 
   int m_counter;
 
-  void center( int, const char* );
-
 public:
 
   SplashScreen( Application*, Graphics*, AudioService* );
