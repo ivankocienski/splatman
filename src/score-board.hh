@@ -32,6 +32,7 @@ public:
   void date_at( int, char*, int );
 
   bool is_on_high_scores(int);
+  int loweset_score();
 
   void push_new_score(int);
   void set_new_name(char *);

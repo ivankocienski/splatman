@@ -5,6 +5,7 @@
 
 #include <iostream>
 
+#include "common.hh"
 #include "graphics.hh"
 #include "round.hh"
 #include "application.hh"
@@ -190,7 +191,14 @@ void Round::draw() {
     m_graphics->draw_font_number( 79, 8, m_player.score() );
 
   m_graphics->draw_font_string( 144, 0, "High score" );
-  m_graphics->draw_font_number( 224, 8, 999999  );
+
+  if( m_score_board->is_on_high_scores( m_player.score() )) {
+
+    if( (g_anim >> 3 ) & 1 )
+      m_graphics->draw_font_number( 224, 8, m_player.score() );
+
+  } else
+    m_graphics->draw_font_number( 224, 8, m_score_board->loweset_score()  );
 
   for( int i = 0; i < m_player.life_count(); i++ ) {
     m_graphics->draw_player( i * 16, 274, 4 );

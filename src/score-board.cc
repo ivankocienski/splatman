@@ -66,6 +66,10 @@ bool ScoreBoard::is_on_high_scores(int s) {
   return s > m_scores[9].score;
 }
 
+int ScoreBoard::loweset_score() {
+  return m_scores[9].score;
+}
+
 void ScoreBoard::push_new_score( int ns ) {
 
   if( !is_on_high_scores(ns) ) return;
