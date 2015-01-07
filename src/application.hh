@@ -5,7 +5,7 @@ class Graphics;
 class ModeBase;
 
 #include "mode-base.hh" 
-#include "round.hh"
+#include "game.hh"
 #include "graphics.hh"
 #include "splash-screen.hh"
 #include "score-board.hh"
@@ -21,7 +21,7 @@ private:
   ModeBase *m_current_mode;
 
   // application modes
-  Round m_round;
+  Game m_game;
   SplashScreen m_splash_screen;
   ShowScores m_show_scores;
   NewHighScore m_new_high_score;
@@ -34,7 +34,8 @@ public:
 
   enum { // app modes
     AM_SPLASH,
-    AM_ROUND,
+    AM_NEW_GAME,
+    AM_NEXT_ROUND,
     AM_SHOW_SCORES,
     AM_NEW_HIGH_SCORE
   };

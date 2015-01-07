@@ -4,14 +4,14 @@
 #include "actor.hh"
 #include "ghost.hh"
 
-class Round;
+class Game;
 class Graphics;
 class AudioService;
 
 class Player : public Actor {
 private:
 
-  Round *m_round;
+  Game *m_game;
   Graphics *m_graphics;
   AudioService *m_audio;
 
@@ -38,10 +38,11 @@ public:
 
   Player() {}
 
-  Player( Round*, Board*, Graphics*, AudioService* );
+  Player( Game*, Board*, Graphics*, AudioService* );
 
-  void setup();
-  void reset();
+  void reset_for_game();
+  void reset_for_retry();
+  void reset_for_round();
 
   void draw();
   void move();

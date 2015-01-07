@@ -8,7 +8,7 @@ using namespace std;
 
 #include "player.hh"
 #include "board.hh"
-#include "round.hh"
+#include "game.hh"
 #include "graphics.hh"
 #include "sounds.hh"
 
@@ -23,33 +23,32 @@ static const int anim_sprites[] = {
 };
 
 
-Player::Player( Round *r, Board *b, Graphics *g, AudioService* s ) : Actor() {
+Player::Player( Game *a, Board *b, Graphics *g, AudioService* s ) : Actor() {
 
   Actor::setup(b);
 
   m_graphics = g;
-  m_round    = r;
-  m_audio    = s;
-  
-  m_want_dir = AD_STATIONARY;
+  m_game     = a;
+  m_audio    = s;  
 }
 
-void Player::setup() {
-
-  reset();
-
-  m_pip_count   = 0;
+void Player::reset_for_game() {
   m_lives       = 3;
   m_score       = 0;
   m_bonus_score = 10000;
 }
 
-void Player::reset() {
-  m_xpos     = 14 * 8 + 1;
-  m_ypos     = 23 * 8 + 4;
-  m_mode     = PM_START;
-  m_want_dir = AD_STATIONARY;
-  m_dir      = AD_STATIONARY;
+void Player::reset_for_retry() {
+  m_xpos      = 14 * 8 + 1;
+  m_ypos      = 23 * 8 + 4;
+  m_mode      = PM_START;
+  m_want_dir  = AD_STATIONARY;
+  m_dir       = AD_STATIONARY;
+}
+
+void Player::reset_for_round() {
+  m_pip_count = 0;
+  reset_for_retry();
 }
 
 void Player::draw() {
@@ -118,7 +117,7 @@ void Player::move() {
       }
 
       if( m_board->clear_pill( m_xpos, m_ypos )) {
-        m_round->scare_ghosts();
+        m_game->scare_ghosts();
         m_score += 50;
         m_audio->play( 0, SP_PICKUP_POWERUP );
       }
@@ -250,5 +249,5 @@ void Player::kill() {
 void Player::has_eaten_ghost( int s ) {
   m_score += s * 100;
 
-  m_round->spawn_score_graphic( m_xpos - 8, m_ypos, s );
+  m_game->spawn_score_graphic( m_xpos - 8, m_ypos, s );
 }

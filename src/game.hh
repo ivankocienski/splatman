@@ -34,15 +34,17 @@ public:
   void move();
 };
 
-class Round : public ModeBase {
+class Game : public ModeBase {
 public:
 
-  Round(Application*, Graphics*, ScoreBoard*, AudioService*);
+  Game(Application*, Graphics*, ScoreBoard*, AudioService*);
 
-  void set_round_number(int);
-  void activate();
+    // set up the game at the start
+  void reset_for_game();
 
-  void init();
+  // set up the game when the player has completed the level
+  void reset_for_round();
+
   void cleanup();
 
   void draw();

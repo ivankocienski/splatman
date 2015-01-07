@@ -6,7 +6,7 @@ using namespace std;
 #include "sounds.hh"
 
 Application::Application() : 
-  m_round( (Application*)this, &m_graphics, &m_score_board, &m_audio ), 
+  m_game( (Application*)this, &m_graphics, &m_score_board, &m_audio ), 
   m_splash_screen( (Application*)this, &m_graphics, &m_audio ),
   m_show_scores( (Application*)this, &m_graphics, &m_score_board, &m_audio ),
   m_new_high_score( (Application*)this, &m_graphics, &m_score_board, &m_audio )
@@ -21,16 +21,7 @@ Application::Application() :
 
   m_graphics.init();
   
-  m_round.init();
-  //m_splash_screen.init();
-  //m_show_scores.init();
-  //m_new_high_score.init();
-
   set_mode( AM_SPLASH );
-//  set_mode( AM_NEW_HIGH_SCORE );
-
-  //m_score_board.push_new_score( 50000 );
-
 }
 
 Application::~Application() {
@@ -57,8 +48,14 @@ void Application::set_mode( int m ) {
       m_current_mode = (ModeBase *)&m_splash_screen;
       break;
 
-    case AM_ROUND:
-      m_current_mode = (ModeBase *)&m_round;
+    case AM_NEW_GAME:
+      m_game.reset_for_game();
+      m_current_mode = (ModeBase *)&m_game;
+      break;
+
+    case AM_NEXT_ROUND:
+      m_game.reset_for_round();
+      m_current_mode = (ModeBase *)&m_game;
       break;
 
     case AM_NEW_HIGH_SCORE:

@@ -64,7 +64,7 @@ sprint finish
 * fix graphics
 * splash screen
   - animation
-- score board toggling
+* score board toggling
   (when player has score greater that can be on high score table)
 - FIX PLAYER RESET BETWEEN ROUNDS?
 * audio

@@ -35,7 +35,7 @@ set (SRC
   src/graphics.cc
   src/player.cc
   src/mode-base.cc
-  src/round.cc
+  src/game.cc
   src/splash-screen.cc
   src/show-scores.cc
   src/score-board.cc

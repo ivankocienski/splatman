@@ -21,7 +21,7 @@ void SplashScreen::activate() {
 void SplashScreen::on_key_down(int k) {
 
   if( k == GLFW_KEY_SPACE ) 
-    m_application->set_mode( Application::AM_ROUND );
+    m_application->set_mode( Application::AM_NEW_GAME );
 }
 
 

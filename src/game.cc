@@ -7,56 +7,55 @@
 
 #include "common.hh"
 #include "graphics.hh"
-#include "round.hh"
+#include "game.hh"
 #include "application.hh"
 #include "score-board.hh"
 
 using namespace std;
 
-Round::Round(Application *a, Graphics *g, ScoreBoard *sb, AudioService *as ) : 
+Game::Game(Application *a, Graphics *g, ScoreBoard *sb, AudioService *as ) : 
   ModeBase( a, g, as ), 
   m_board( m_graphics ),
   m_player( this, &m_board, m_graphics, as ),
   m_score_board(sb)
 {
-  m_player.setup();
   m_freeze = 0;
   m_freeze_message = FM_NONE;
-}
-
-void Round::init() {
 
   m_ghosts.push_back( Ghost( &m_board, &m_player, m_graphics, Ghost::GC_RED ));
   m_ghosts.push_back( Ghost( &m_board, &m_player, m_graphics, Ghost::GC_YELLOW ));
   m_ghosts.push_back( Ghost( &m_board, &m_player, m_graphics, Ghost::GC_PINK ));
   m_ghosts.push_back( Ghost( &m_board, &m_player, m_graphics, Ghost::GC_BLUE ));
+}
 
+void Game::reset_for_game() {
+
+  m_player.reset_for_game();
+  
   m_ghost_scare_time  = 1050;
   m_ghost_wander_time = 1050;
 
   next_round();
 }
 
-void Round::activate() {
-  cout << "Round: activate()" << endl;
-}
-
-void Round::reset_actors() {
+void Game::reset_for_round() {
   
   m_score_multiplier = 2;
-
-  m_score_graphics.clear();
-  m_player.reset();
-
-  for( vector<Ghost>::iterator it = m_ghosts.begin(); it != m_ghosts.end(); it++ ) 
-    it->reset(m_ghost_wander_time);
-}
-
-void Round::next_round() {
 
   m_freeze = 80;
   m_freeze_message = FM_READY;
   m_blink_score    = 0;
+
+  m_score_graphics.clear();
+  m_player.reset_for_retry();
+
+  for( vector<Ghost>::iterator it = m_ghosts.begin(); it != m_ghosts.end(); it++ ) 
+    it->reset(m_ghost_wander_time);
+
+  m_audio->play( 0, SP_START_LEVEL );
+}
+
+void Game::next_round() {
 
   m_ghost_wander_time -= 50;
   m_ghost_scare_time  -= 50;
@@ -64,12 +63,13 @@ void Round::next_round() {
   if( m_ghost_wander_time < 0 ) m_ghost_wander_time = 0;
   if( m_ghost_scare_time  < 0 ) m_ghost_scare_time  = 0;
 
-  reset_actors();
+  m_board.reset();
+  m_player.reset_for_round();
 
-  m_audio->play( 0, SP_START_LEVEL );
+  reset_for_round();
 }
 
-void Round::move() {
+void Game::move() {
 
   if( m_freeze ) {
     m_freeze--;
@@ -89,9 +89,10 @@ void Round::move() {
   if( m_player.is_dead() ) {
 
     if( m_player.life_count() ) {
+
+      reset_for_round();
       m_freeze = 80;
       m_freeze_message = FM_READY;
-      reset_actors();
 
     } else {
       m_freeze = 200;
@@ -145,7 +146,7 @@ void Round::move() {
 
 }
 
-void Round::eat_ghost( Ghost &g ) {
+void Game::eat_ghost( Ghost &g ) {
 
   g.trigger_eyes();
 
@@ -166,17 +167,17 @@ void Round::eat_ghost( Ghost &g ) {
     m_score_multiplier = 2;
 }
 
-void Round::spawn_score_graphic( int x, int y, int n ) {
+void Game::spawn_score_graphic( int x, int y, int n ) {
   m_score_graphics.push_front( ScoreGraphic( m_graphics, x, y, n ));
 }
 
-void Round::scare_ghosts() {
+void Game::scare_ghosts() {
 
   for( vector<Ghost>::iterator it = m_ghosts.begin(); it != m_ghosts.end(); it++ )
     it->trigger_scared(m_ghost_scare_time);
 }
 
-void Round::draw() {
+void Game::draw() {
 
   m_graphics->draw_board( 0, 16 );
 
@@ -233,7 +234,7 @@ void Round::draw() {
   //m_graphics->draw_ghost( 147, 16 * 16 + 9, 7, 4 );
 }
 
-void Round::on_key_down( int k ) {
+void Game::on_key_down( int k ) {
 
   switch( k ) {
 
