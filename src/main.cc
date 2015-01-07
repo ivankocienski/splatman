@@ -20,7 +20,7 @@ byte g_anim = 0;
 
 static Application *p_app = NULL; // aaah. 
 
-const char *g_title = "splatterman";
+const char *g_title = "splatman";
 const int   g_xres  = 800; 
 const int   g_yres  = 600;
 

@@ -2,7 +2,7 @@
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 
 # our exe name
-project (splatterman)
+project (splatman)
 
 cmake_minimum_required (VERSION 2.6)
 
@@ -65,9 +65,9 @@ link_libraries(
   ${PORTAUDIO_LIBRARIES}
 )
 
-add_executable(splatterman ${SRC} )
+add_executable(splatman ${SRC} )
 
-add_custom_command(TARGET splatterman POST_BUILD 
+add_custom_command(TARGET splatman POST_BUILD 
   COMMAND rm -f ${CMAKE_CURRENT_BINARY_DIR}/data COMMENT "removing stale data
   directory"
   COMMAND ln -sf ${CMAKE_SOURCE_DIR}/data ${CMAKE_CURRENT_BINARY_DIR}/data COMMENT "linking data directory"

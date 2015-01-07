@@ -65,7 +65,9 @@ sprint finish
 * splash screen
   - animation
 - score board toggling
-- audio
+  (when player has score greater that can be on high score table)
+- FIX PLAYER RESET BETWEEN ROUNDS?
+* audio
 - fix complete / next round progression
 - speed tuning
   - up framerate ( 30fps? 60fps? )
