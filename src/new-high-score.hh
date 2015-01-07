@@ -4,6 +4,7 @@
 class ScoreBoard;
 
 #include "mode-base.hh"
+#include "sounds.hh"
 
 class NewHighScore : public ModeBase {
 private:
@@ -28,7 +29,7 @@ private:
 
 public:
   
-  NewHighScore( Application*, Graphics*, ScoreBoard* );
+  NewHighScore( Application*, Graphics*, ScoreBoard*, AudioService* );
 
   void activate();
   void on_key_down(int);

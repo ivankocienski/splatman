@@ -11,6 +11,7 @@ class ModeBase;
 #include "score-board.hh"
 #include "show-scores.hh"
 #include "new-high-score.hh"
+#include "audio/audio.hh"
 
 class Application {
 private:
@@ -27,6 +28,8 @@ private:
 
   ScoreBoard m_score_board;
 
+  AudioService m_audio;
+
 public:
 
   enum { // app modes
@@ -37,8 +40,8 @@ public:
   };
 
   Application();
+  ~Application();
 
-  void init();
   void cleanup();
 
   void set_mode( int );

@@ -18,7 +18,7 @@ using namespace std;
 
 byte g_anim = 0;
 
-static Application app;
+static Application *p_app = NULL; // aaah. 
 
 const char *g_title = "splatterman";
 const int   g_xres  = 800; 
@@ -31,26 +31,76 @@ static GLFWwindow* main_window = NULL;
 static void on_key( GLFWwindow* win, int key, int scancode, int action, int mods ) {
 
   if( action == GLFW_PRESS ) 
-    app.current_mode()->on_key_down( key );
+    p_app->current_mode()->on_key_down( key );
   else
-    app.current_mode()->on_key_up( key );
+    p_app->current_mode()->on_key_up( key );
 }
 
-static void cleanup() {
-
-  app.cleanup();
-
-  glfwTerminate();
-}
-
-int main(int argc, char ** argv ) {
-
-  struct timespec ts;
+static void run() {
 
 //  char buffer[200]; 
 //  float previous; 
 
-  atexit(cleanup);
+  struct timespec ts;
+
+  Application app;
+  p_app = &app;
+
+//  previous = glfwGetTime();
+  ts.tv_sec  = 0;
+  ts.tv_nsec = 50 * 1000;
+
+  int dx1 = g_xres / 2 - 224;
+  int dy1 = g_yres / 2 - 288;
+  int dx2 = g_xres / 2 + 224;
+  int dy2 = g_yres / 2 + 288;
+
+  while(!glfwWindowShouldClose(main_window)) {
+
+/*     float now = glfwGetTime();
+ *     float fps = (1.0 / (now - previous));
+ *     previous = now;
+ * 
+ *     snprintf( buffer, 200, "%s (%.2f fps)", g_title, fps );
+ *     glfwSetWindowTitle( main_window, buffer );
+ */
+    
+    //glLoadIdentity();
+    
+    app.current_mode()->move();
+
+    // render game
+    glClear( GL_COLOR_BUFFER_BIT );
+    app.current_mode()->draw();
+    
+    glFlush();
+
+    // copy to back buffer
+    glBindTexture( GL_TEXTURE_2D, s_scale_texture );
+    glCopyTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, 0, g_yres - 288, 224, 288, 0 );
+
+    glClear( GL_COLOR_BUFFER_BIT );
+
+    // scale and center ...
+    glBegin( GL_QUADS );
+
+    glTexCoord2d( 0, 1); glVertex2f( dx1, dy1 );
+    glTexCoord2d( 1, 1); glVertex2f( dx2, dy1 );
+    glTexCoord2d( 1, 0); glVertex2f( dx2, dy2 );
+    glTexCoord2d( 0, 0); glVertex2f( dx1, dy2 );
+
+    glEnd();
+
+    glfwSwapBuffers(main_window);
+    glfwPollEvents();
+
+    nanosleep( &ts, NULL ); 
+
+    g_anim++;
+  }
+}
+
+static void init() {
 
   srand(time(NULL));
 
@@ -58,16 +108,14 @@ int main(int argc, char ** argv ) {
 
   if(!glfwInit()) {
     cerr << "could not init glfw" << endl;
-    return -1;
+    exit(-1);
   }
-
-  atexit(cleanup);
 
   main_window = glfwCreateWindow(g_xres, g_yres, g_title, NULL, NULL);
 
   if(!main_window) {
     cerr << "could not create window" << endl;
-    return -1;
+    exit(-1);
   } 
 
   glfwMakeContextCurrent(main_window);
@@ -109,61 +157,15 @@ int main(int argc, char ** argv ) {
     GL_UNSIGNED_BYTE,
     0 
   );
+}
+
+int main(int argc, char ** argv ) {
+
+  init();
   
-  app.init();
+  run();
 
-//  previous = glfwGetTime();
-  ts.tv_sec  = 0;
-  ts.tv_nsec = 50 * 1000;
-
-  int dx1 = g_xres / 2 - 224;
-  int dy1 = g_yres / 2 - 288;
-  int dx2 = g_xres / 2 + 224;
-  int dy2 = g_yres / 2 + 288;
-
-  while(!glfwWindowShouldClose(main_window)) {
-
-/*     float now = glfwGetTime();
- *     float fps = (1.0 / (now - previous));
- *     previous = now;
- * 
- *     snprintf( buffer, 200, "%s (%.2f fps)", g_title, fps );
- *     glfwSetWindowTitle( main_window, buffer );
- */
-    
-    glLoadIdentity();
-    
-    app.current_mode()->move();
-
-    // render game
-    glClear( GL_COLOR_BUFFER_BIT );
-    app.current_mode()->draw();
-    
-    glFlush();
-
-    // copy to back buffer
-    glBindTexture( GL_TEXTURE_2D, s_scale_texture );
-    glCopyTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, 0, g_yres - 288, 224, 288, 0 );
-
-    glClear( GL_COLOR_BUFFER_BIT );
-
-    // scale and center ...
-    glBegin( GL_QUADS );
-
-    glTexCoord2d( 0, 1); glVertex2f( dx1, dy1 );
-    glTexCoord2d( 1, 1); glVertex2f( dx2, dy1 );
-    glTexCoord2d( 1, 0); glVertex2f( dx2, dy2 );
-    glTexCoord2d( 0, 0); glVertex2f( dx1, dy2 );
-
-    glEnd();
-
-    glfwSwapBuffers(main_window);
-    glfwPollEvents();
-
-    nanosleep( &ts, NULL ); 
-
-    g_anim++;
-  }
+  glfwTerminate();
 
   return 0;
 }

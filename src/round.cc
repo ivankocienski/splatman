@@ -12,10 +12,10 @@
 
 using namespace std;
 
-Round::Round(Application *a, Graphics *g, ScoreBoard *sb ) : 
-  ModeBase( a, g ), 
+Round::Round(Application *a, Graphics *g, ScoreBoard *sb, AudioService *as ) : 
+  ModeBase( a, g, as ), 
   m_board( m_graphics ),
-  m_player( this, &m_board, m_graphics ),
+  m_player( this, &m_board, m_graphics, as ),
   m_score_board(sb)
 {
   m_player.setup();
@@ -64,7 +64,10 @@ void Round::next_round() {
   if( m_ghost_scare_time  < 0 ) m_ghost_scare_time  = 0;
 
   reset_actors();
+
+  m_audio->play( 0, SP_START_LEVEL );
 }
+
 void Round::move() {
 
   if( m_freeze ) {

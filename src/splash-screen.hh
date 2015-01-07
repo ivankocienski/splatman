@@ -15,7 +15,7 @@ private:
 
 public:
 
-  SplashScreen( Application*, Graphics* );
+  SplashScreen( Application*, Graphics*, AudioService* );
 
   void init();
 

@@ -1,16 +1,23 @@
 
+#include <iostream>
+using namespace std;
+
 #include "application.hh"
+#include "sounds.hh"
 
 Application::Application() : 
-  m_round( (Application*)this, &m_graphics, &m_score_board ), 
-  m_splash_screen( (Application*)this, &m_graphics ),
-  m_show_scores( (Application*)this, &m_graphics, &m_score_board ),
-  m_new_high_score( (Application*)this, &m_graphics, &m_score_board )
-{ }
-
-void Application::init() {
+  m_round( (Application*)this, &m_graphics, &m_score_board, &m_audio ), 
+  m_splash_screen( (Application*)this, &m_graphics, &m_audio ),
+  m_show_scores( (Application*)this, &m_graphics, &m_score_board, &m_audio ),
+  m_new_high_score( (Application*)this, &m_graphics, &m_score_board, &m_audio )
+{
 
   m_score_board.load();
+
+  m_audio.init();
+  m_audio.start();
+
+  define_sounds( m_audio );
 
   m_graphics.init();
   
@@ -22,12 +29,21 @@ void Application::init() {
   set_mode( AM_SPLASH );
 //  set_mode( AM_NEW_HIGH_SCORE );
 
-  m_score_board.push_new_score( 50000 );
+  //m_score_board.push_new_score( 50000 );
+
 }
 
-void Application::cleanup() {
+Application::~Application() {
 
   m_graphics.cleanup();
+
+  try {
+    m_audio.stop();
+
+  } catch( const AudioException& x ) {
+
+    cerr << "error: (" << x.function() << ") " << x.message() << endl;
+  }
 }
 
 void Application::set_mode( int m ) {

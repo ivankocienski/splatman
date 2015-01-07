@@ -10,6 +10,7 @@ using namespace std;
 #include "board.hh"
 #include "round.hh"
 #include "graphics.hh"
+#include "sounds.hh"
 
 static const int death_anim_duration = 150;
 
@@ -22,12 +23,13 @@ static const int anim_sprites[] = {
 };
 
 
-Player::Player( Round *r, Board *b, Graphics *g ) : Actor() {
+Player::Player( Round *r, Board *b, Graphics *g, AudioService* s ) : Actor() {
 
   Actor::setup(b);
 
   m_graphics = g;
   m_round    = r;
+  m_audio    = s;
   
   m_want_dir = AD_STATIONARY;
 }
@@ -112,20 +114,27 @@ void Player::move() {
       if( m_board->clear_pip( m_xpos, m_ypos ) ) {
         m_pip_count++;
         m_score += 10;
+        m_audio->play( 0, SP_PICKUP_PIL );
       }
 
       if( m_board->clear_pill( m_xpos, m_ypos )) {
         m_round->scare_ghosts();
         m_score += 50;
+        m_audio->play( 0, SP_PICKUP_POWERUP );
       }
     }
   }
 
   
   if( is_start() || (is_at_intersection() && can_move( m_want_dir ))) {
+
+    if( m_dir != m_want_dir && is_at_intersection() )
+      m_audio->play( 0, SP_CHANGE_DIR );
+    
     //m_start = false;
     m_mode = PM_ALIVE;
-    m_dir   = m_want_dir;
+    m_dir  = m_want_dir;
+
   }
   
 }

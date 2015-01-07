@@ -8,7 +8,7 @@
 #include "graphics.hh"
 #include "application.hh"
 
-SplashScreen::SplashScreen( Application *a, Graphics *g ) : ModeBase( a, g ) { 
+SplashScreen::SplashScreen( Application *a, Graphics *g, AudioService *as ) : ModeBase( a, g, as ) { 
 }
 
 void SplashScreen::init() {

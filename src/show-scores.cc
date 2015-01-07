@@ -7,7 +7,7 @@
 #include "application.hh"
 #include "graphics.hh"
 
-ShowScores::ShowScores( Application* a, Graphics* g, ScoreBoard *sb ) : ModeBase( a, g ) {
+ShowScores::ShowScores( Application* a, Graphics* g, ScoreBoard *sb, AudioService *as ) : ModeBase( a, g, as ) {
   m_score_board = sb;
 }
 

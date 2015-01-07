@@ -16,6 +16,14 @@ pkg_search_module(GLFW REQUIRED glfw3)
 find_package (OpenGL REQUIRED)
 find_package (PNG REQUIRED)
 
+#find_package (Threads REQUIRED)
+set(Boost_USE_MULTITHREADED ON)
+set(Boost_USE_SYSTEM ON)
+find_package (Boost COMPONENTS thread system REQUIRED)
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
+find_package (Portaudio REQUIRED)
+
 
 # source files. sure, there's a better way of doing this
 set (SRC
@@ -32,14 +40,29 @@ set (SRC
   src/show-scores.cc
   src/score-board.cc
   src/new-high-score.cc
+  src/sounds.cc
+
+	src/audio/audio-exception.cc
+	src/audio/audio-service.cc
+	src/audio/audio-channel.cc
+	src/audio/audio-pattern.cc
+	src/audio/audio-oscillator-base.cc
+	src/audio/audio-sine-oscillator.cc
+	src/audio/audio-square-oscillator.cc
+	src/audio/audio-noise-oscillator.cc
+	src/audio/audio-saw-oscillator.cc
+	src/audio/audio-triangle-oscillator.cc
 )
 
 
 link_libraries(
+  #${PTHREAD_LIBRARY}
+  ${Boost_LIBRARIES}
   ${OPENGL_LIBRARIES}
   ${GLFW_LIBRARIES}
   ${PNG_LIBRARY}
   ${ZLIB_LIBRARY}
+  ${PORTAUDIO_LIBRARIES}
 )
 
 add_executable(splatterman ${SRC} )

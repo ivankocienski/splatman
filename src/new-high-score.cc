@@ -19,7 +19,7 @@ const static char char_palette[] = {
   '3', '4', '5', '6', '7', '8', '9'
 };
 
-NewHighScore::NewHighScore( Application* a, Graphics* g, ScoreBoard* sb ) : ModeBase( a, g ) {
+NewHighScore::NewHighScore( Application* a, Graphics* g, ScoreBoard* sb, AudioService* as ) : ModeBase( a, g, as ) {
   m_score_board = sb; 
 }
 

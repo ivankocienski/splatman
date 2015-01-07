@@ -37,7 +37,7 @@ public:
 class Round : public ModeBase {
 public:
 
-  Round(Application*, Graphics*, ScoreBoard*);
+  Round(Application*, Graphics*, ScoreBoard*, AudioService*);
 
   void set_round_number(int);
   void activate();

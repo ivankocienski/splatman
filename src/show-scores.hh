@@ -4,6 +4,7 @@
 class ScoreBoard;
 
 #include "mode-base.hh"
+#include "sounds.hh"
 
 class ShowScores : public ModeBase {
 private:
@@ -15,7 +16,7 @@ private:
   
 public:
 
-  ShowScores( Application*, Graphics*, ScoreBoard* );
+  ShowScores( Application*, Graphics*, ScoreBoard*, AudioService* );
   void init(); 
 
   void activate();

@@ -6,12 +6,14 @@
 
 class Round;
 class Graphics;
+class AudioService;
 
 class Player : public Actor {
 private:
 
   Round *m_round;
   Graphics *m_graphics;
+  AudioService *m_audio;
 
   int m_want_dir;
 //  bool m_start;
@@ -36,7 +38,7 @@ public:
 
   Player() {}
 
-  Player( Round*, Board*, Graphics* );
+  Player( Round*, Board*, Graphics*, AudioService* );
 
   void setup();
   void reset();
