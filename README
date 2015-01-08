@@ -54,7 +54,7 @@ these are the basic commands
 
 >  cd splatman
 
->  git clone splatman repo
+>  git clone git@github.com:ivankocienski/splatman.git repo
 
 >  mkdir build
 
