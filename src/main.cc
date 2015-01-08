@@ -19,13 +19,13 @@ using namespace std;
 byte g_anim = 0;
 
 static Application *p_app = NULL; // aaah. 
+static const int p_fps    = 45;
 
 const char *g_title = "splatman";
 const int   g_xres  = 800; 
 const int   g_yres  = 600;
 
-static GLuint s_scale_texture = 0;
-
+static GLuint s_scale_texture   = 0;
 static GLFWwindow* main_window = NULL;
 
 static void on_key( GLFWwindow* win, int key, int scancode, int action, int mods ) {
@@ -38,17 +38,17 @@ static void on_key( GLFWwindow* win, int key, int scancode, int action, int mods
 
 static void run() {
 
-//  char buffer[200]; 
-//  float previous; 
+  char buffer[200]; 
+  float previous; 
 
   struct timespec ts;
 
   Application app;
   p_app = &app;
 
-//  previous = glfwGetTime();
+  previous = glfwGetTime();
   ts.tv_sec  = 0;
-  ts.tv_nsec = 50 * 1000;
+  ts.tv_nsec = ( 1.0 / (float)p_fps) * 1000;
 
   int dx1 = g_xres / 2 - 224;
   int dy1 = g_yres / 2 - 288;
@@ -57,13 +57,12 @@ static void run() {
 
   while(!glfwWindowShouldClose(main_window)) {
 
-/*     float now = glfwGetTime();
- *     float fps = (1.0 / (now - previous));
- *     previous = now;
- * 
- *     snprintf( buffer, 200, "%s (%.2f fps)", g_title, fps );
- *     glfwSetWindowTitle( main_window, buffer );
- */
+    float now = glfwGetTime();
+    float fps = (1.0 / (now - previous));
+    previous = now;
+
+    snprintf( buffer, 200, "%s (%.2f fps)", g_title, fps );
+    glfwSetWindowTitle( main_window, buffer );
     
     //glLoadIdentity();
     
@@ -91,10 +90,24 @@ static void run() {
 
     glEnd();
 
+    // uh, CRT emulator. make this use shaders.
+/*     glDisable( GL_TEXTURE_2D );
+ *     glColor4f( 0, 0, 0, 0.4 );
+ *     glBegin( GL_LINES );
+ *     for(int i = 0; i < g_yres; i += 2 ) {
+ *       glVertex2f( 0, i );
+ *       glVertex2f( g_xres, i );
+ *     }
+ *     glEnd();
+ * 
+ *     glColor4f( 1, 1, 1, 1 );
+ *     glEnable( GL_TEXTURE_2D );
+ */
+
     glfwSwapBuffers(main_window);
     glfwPollEvents();
 
-    nanosleep( &ts, NULL ); 
+    //nanosleep( &ts, NULL ); 
 
     g_anim++;
   }

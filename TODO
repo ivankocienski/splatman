@@ -66,12 +66,23 @@ sprint finish
   - animation
 * score board toggling
   (when player has score greater that can be on high score table)
-- FIX PLAYER RESET BETWEEN ROUNDS?
+* FIX PLAYER RESET BETWEEN ROUNDS?
 * audio
-- fix complete / next round progression
+* fix complete / next round progression
 - speed tuning
   - up framerate ( 30fps? 60fps? )
 - score system
-  - high score blinking in game when can get onto score board
-  - enter high score bit
+  * high score blinking in game when can get onto score board
+  * enter high score bit
+  
 
+chicken bits
+============
+
+* audio on score entry screen
+- splash screen animation
+- ghost proximity sound in game?
+- ghost scared sound in game?
+- ghost speed/timing tuning
+- score powerups
+- game text alignment

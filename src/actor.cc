@@ -16,6 +16,8 @@ Actor::Actor() {
   m_ypos  = 0;
   m_dir   = AD_STATIONARY;
   m_board = NULL;
+  m_step_counter = 0;
+  m_step  = 0;
 }
 
 bool Actor::is_at_intersection( ) {

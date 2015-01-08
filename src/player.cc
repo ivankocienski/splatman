@@ -244,6 +244,8 @@ bool Player::is_dying() {
 void Player::kill() {
   m_death_anim = death_anim_duration;
   m_mode = PM_DYING;
+
+  m_audio->play( 0, SP_DIED );
 }
 
 void Player::has_eaten_ghost( int s ) {
@@ -251,3 +253,8 @@ void Player::has_eaten_ghost( int s ) {
 
   m_game->spawn_score_graphic( m_xpos - 8, m_ypos, s );
 }
+
+void Player::nudge_score() {
+  m_score = 10000;
+}
+

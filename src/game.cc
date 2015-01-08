@@ -30,6 +30,8 @@ Game::Game(Application *a, Graphics *g, ScoreBoard *sb, AudioService *as ) :
 
 void Game::reset_for_game() {
 
+  cout << "Game::reset_for_game()" << endl;
+
   m_player.reset_for_game();
   
   m_ghost_scare_time  = 1050;
@@ -40,6 +42,8 @@ void Game::reset_for_game() {
 
 void Game::reset_for_round() {
   
+  cout << "Game::reset_for_round()" << endl;
+
   m_score_multiplier = 2;
 
   m_freeze = 80;
@@ -56,6 +60,8 @@ void Game::reset_for_round() {
 }
 
 void Game::next_round() {
+
+  cout << "Game::next_round()" << endl;
 
   m_ghost_wander_time -= 50;
   m_ghost_scare_time  -= 50;
@@ -76,8 +82,14 @@ void Game::move() {
 
     if(!m_freeze) {
       if( m_freeze_message == FM_GAME_OVER ) {
-        // TODO: hi scores
-        m_application->set_mode( Application::AM_SPLASH );
+        
+        if( m_score_board->is_on_high_scores( m_player.score() )) {
+
+          m_score_board->push_new_score( m_player.score() );
+          m_application->set_mode( Application::AM_NEW_HIGH_SCORE );
+
+        } else
+          m_application->set_mode( Application::AM_SPLASH );
       }
       m_freeze_message = FM_NONE;
     }
@@ -95,6 +107,7 @@ void Game::move() {
       m_freeze_message = FM_READY;
 
     } else {
+
       m_freeze = 200;
       m_freeze_message = FM_GAME_OVER;
     }
@@ -127,7 +140,6 @@ void Game::move() {
 
         if( !it->is_eyes() ) 
           m_player.kill(); 
-
       }
     }
   }
@@ -165,6 +177,8 @@ void Game::eat_ghost( Ghost &g ) {
     if( m_score_multiplier < 16 ) m_score_multiplier <<= 1;
   } else
     m_score_multiplier = 2;
+
+  m_audio->play( 1, SP_EAT_GHOST );
 }
 
 void Game::spawn_score_graphic( int x, int y, int n ) {
@@ -245,15 +259,8 @@ void Game::on_key_down( int k ) {
 
     case GLFW_KEY_T:
 
-     for( vector<Ghost>::iterator it = m_ghosts.begin(); it != m_ghosts.end(); it++ )
-
-       it->trigger_eyes();
-
-     break;
-
-    case GLFW_KEY_K:
-     m_player.kill();
-     break;
+      m_player.nudge_score();
+      break;
 
   }
 }

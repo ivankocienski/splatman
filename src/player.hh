@@ -66,4 +66,6 @@ public:
   bool is_dying();
   int  life_count();
   bool has_score_bonused();
+
+  void nudge_score();
 };

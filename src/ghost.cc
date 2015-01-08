@@ -1,7 +1,4 @@
 
-#include <iostream>
-using namespace std;
-
 #include <GL/gl.h>
 #include <stdlib.h>
 
@@ -245,8 +242,6 @@ void Ghost::move_hunt() {
   int a_dir = m_player->relative_dir_from( m_xpos, m_ypos );
   if( can_move( a_dir ) && !behind_me( a_dir )) {
     
-    cout << "hunt: target" << endl;
-
     m_dir = a_dir;
     move_actor( m_dir );
     return;
@@ -257,8 +252,6 @@ void Ghost::move_hunt() {
   int b_dir = m_player->relative_dir_from2( a_dir, m_xpos, m_ypos );
   if( can_move( b_dir ) && !behind_me( b_dir )) {
     
-    cout << "hunt: target2" << endl;
-
     m_dir = b_dir;
     move_actor( m_dir );
     return;
@@ -266,9 +259,6 @@ void Ghost::move_hunt() {
   } 
 
   // no, fallback to meandering around then...
-  
-  cout << "go wander. m_wander_time=" << m_wander_time << endl;
-
   int d = 100;
   if( m_wander_time ) d += rand() % m_wander_time;
   set_mode(GM_WANDER, d);
@@ -309,18 +299,12 @@ void Ghost::move_eyes() {
   if( can_move( AD_LEFT  )) i++;
   if( can_move( AD_RIGHT )) i++;
 
-  cout << "i=" << i << endl;
-
   if( i < 3 ) {
     if(can_move( m_dir )) {
       move_actor( m_dir );
       return;
     }
   }
-
-  cout << "eyes: target" << endl;
-
-
 
   if( m_ypos < 88 || m_ypos > 136 ) {
 
@@ -412,14 +396,9 @@ void Ghost::move() {
 
 }
 
-static const char* names[] = { "parked", "wander", "hunt", "scared", "eyes" };
-static const char* colors[] = { "red", "yellow", "pink", "blue" };
-
 void Ghost::set_mode( int m, int h ) {
   m_mode = m;
   m_mode_hold = h;
-
-  cout << colors[m_color] << " set_mode " << names[m_mode] << endl;
 
   switch(m) { 
     case GM_PARKED:

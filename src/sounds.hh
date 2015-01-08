@@ -14,7 +14,9 @@ enum { // sound pattern identifiers
   SP_CHANGE_DIR,
 
   SP_NEW_SCORE_MOVE,
-  SP_NEW_SCORE_SHOW
+  SP_NEW_SCORE_SHOW,
+  SP_NEW_SCORE_ENTER,
+  SP_NEW_SCORE_DELETE
   
 
 };

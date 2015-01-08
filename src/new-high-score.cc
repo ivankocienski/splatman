@@ -28,6 +28,8 @@ void NewHighScore::activate() {
   m_cur_pos  = 0;
   m_name_pos = 0;
   m_cur_mode = CM_CHAR;
+
+  m_audio->play( 1, SP_NEW_SCORE_SHOW );
 }
 
 void NewHighScore::on_key_down(int k) {
@@ -41,6 +43,8 @@ void NewHighScore::on_key_down(int k) {
           m_name_pos++;
         else
           m_cur_mode = CM_OKAY;
+
+        m_audio->play( 0, SP_NEW_SCORE_ENTER );
         break;
 
       case CM_DELETE:
@@ -56,7 +60,7 @@ void NewHighScore::on_key_down(int k) {
           if(m_name_pos) m_name_pos--;
           m_name[m_name_pos] = 0;
         }
-
+        m_audio->play( 0, SP_NEW_SCORE_DELETE );
         break;
 
       case CM_OKAY:
@@ -82,11 +86,13 @@ void NewHighScore::on_key_down(int k) {
         case GLFW_KEY_LEFT:
           m_cur_pos--; 
           if(m_cur_pos < 0) m_cur_pos = 36;
+          m_audio->play( 0, SP_NEW_SCORE_MOVE );
           break;
 
         case GLFW_KEY_RIGHT: 
           m_cur_pos++;
           if(m_cur_pos > 36) m_cur_pos = 0;
+          m_audio->play( 0, SP_NEW_SCORE_MOVE );
           break;
 
         case GLFW_KEY_UP:   
@@ -97,6 +103,7 @@ void NewHighScore::on_key_down(int k) {
           }
           
           if(m_cur_pos > 36) m_cur_pos -= 10;
+          m_audio->play( 0, SP_NEW_SCORE_MOVE );
           break;
 
         case GLFW_KEY_DOWN:  
@@ -106,6 +113,7 @@ void NewHighScore::on_key_down(int k) {
             m_cur_pos -= 40;
           }
           if(m_cur_pos <  0) m_cur_pos += 10;
+          m_audio->play( 0, SP_NEW_SCORE_MOVE );
           break; 
       } 
 
@@ -114,28 +122,40 @@ void NewHighScore::on_key_down(int k) {
     case CM_DELETE:
       if( k == GLFW_KEY_UP   ) m_cur_mode = CM_CHAR;
       if( k == GLFW_KEY_DOWN ) m_cur_mode = CM_OKAY;
+      m_audio->play( 0, SP_NEW_SCORE_MOVE );
       break;
 
     case CM_OKAY:
       if( k == GLFW_KEY_UP   ) m_cur_mode = CM_DELETE;
       if( k == GLFW_KEY_DOWN ) m_cur_mode = CM_CANCEL;
+      m_audio->play( 0, SP_NEW_SCORE_MOVE );
       break;
 
     case CM_CANCEL:
       if( k == GLFW_KEY_UP   ) m_cur_mode = CM_OKAY;
       if( k == GLFW_KEY_DOWN ) m_cur_mode = CM_CHAR;
+      m_audio->play( 0, SP_NEW_SCORE_MOVE );
       break; 
   } 
 }
 
 void NewHighScore::draw() {
 
+  // this may be a bit ugly
+
   char ch[2];
 
-  m_graphics->draw_font_string( 0, 0, "ENTER NAME" );
+  m_graphics->draw_font_string( 0, 8, "ENTER NAME" );
+
+  m_graphics->draw_font_string( 0, 40, "---" );
+  m_graphics->draw_font_string( 0, 32, m_name );
+
+  if((g_anim >> 5 ) & 1) {
+    m_graphics->draw_font_string( m_name_pos * 8, 32, "#" );
+  }
 
   int x = 0;
-  int y = 0;
+  int y = 4;
 
   ch[1] = 0;
 
@@ -144,7 +164,7 @@ void NewHighScore::draw() {
     ch[0] = char_palette[i];
 
     if( should_draw_char(i) ) 
-      m_graphics->draw_font_string( x * 32 + 32, y * 32 + 64, ch );
+      m_graphics->draw_font_string( x * 16, y * 16, ch );
 
     x++;
     if( x > 9 ) {
@@ -153,27 +173,18 @@ void NewHighScore::draw() {
     }
   }
 
-  x = 64;
-  y++;
+  y += 2;
   
   if( should_draw_mode(CM_DELETE) ) 
-    m_graphics->draw_font_string( x, y * 32 + 64, "DELETE" );
+    m_graphics->draw_font_string( 0, y * 16, "DELETE" );
 
   y++;
   if( should_draw_mode(CM_OKAY) )
-    m_graphics->draw_font_string( x, y * 32 + 64, "OKAY" );
+    m_graphics->draw_font_string( 0, y * 16, "OKAY" );
 
   y++;
   if( should_draw_mode(CM_CANCEL) )
-    m_graphics->draw_font_string( x, y * 32 + 64, "CANCEL" );
-
-  y += 2;
-  x = 2;
-  m_graphics->draw_font_string( x * 16 + 32, y * 32 + 64, m_name );
-
-  if((g_anim >> 7 ) & 1) {
-    m_graphics->draw_font_string( (x + m_name_pos) * 16 + 32, y * 32 + 64, "#" );
-  }
+    m_graphics->draw_font_string( 0, y * 16, "CANCEL" );
 }
 
 void NewHighScore::move() { }
@@ -183,12 +194,12 @@ bool NewHighScore::should_draw_char( int t ) {
 
   if( m_cur_pos != t ) return true;
 
-  return (g_anim >> 7 ) & 1;
+  return (g_anim >> 5 ) & 1;
 }
 
 bool NewHighScore::should_draw_mode( int t ) {
   if( m_cur_mode != t ) return true;
 
-  return (g_anim >> 7 ) & 1;
+  return (g_anim >> 5 ) & 1;
 }
 
