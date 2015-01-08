@@ -1,0 +1,71 @@
+
+SPLATMAN - a pacman clone
+
+Copyright
+=========
+
+Implementation (c) 2015 Ivan Kocienski.
+Game & art (c) 1980 Namco
+
+
+Motivation
+==========
+
+Ever tried to get faster at coding and found yourself getting bogged down on 
+the learning curve as you try to improve your skills? Ever wanted to see just
+how blindingly fast you can hack code? I did- and I needed a project so
+simple that even a novice could do it. 
+
+Umpteen weeks later I have come to realise two things- Pacman is a 
+surprisingly complicated and subtle game. And I will never blame a publisher
+for delaying a release due to game tuning again. 
+
+That takes time and passion.
+
+
+Features
+========
+
+- nice scaling video 'emulation' style
+- fast and responseive
+- sound
+- score board
+
+
+Requirements
+============
+
+- cmake
+- libraries
+  - boost
+  - opengl
+  - glfw
+  - portaudio
+  - png
+  - zlib (for png)
+
+
+To run
+======
+
+make a directory called splatman (or what ever)
+
+these are the basic commands
+
+>  cd splatman
+
+>  git clone splatman repo
+
+>  mkdir build
+
+>  cd build
+
+>  cmake ../repo
+
+>  make
+
+>  ./spatman
+
+
+
+

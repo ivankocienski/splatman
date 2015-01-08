@@ -34,7 +34,7 @@ void ScoreEntry::reload( int hilight_pos ) {
   snprintf(
     buffer,
     25,
-    "%2d %s %3s %5d",
+    "%2d %s %3s %6d",
     m_position + 1,
     date_buffer,
     m_score_board->name_at(m_position).c_str(),
