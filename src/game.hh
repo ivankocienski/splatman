@@ -23,7 +23,6 @@ private:
   int m_sprite;
   int m_xpos;
   int m_ypos;
-  int m_step;
 
 public:
   

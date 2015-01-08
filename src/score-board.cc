@@ -50,8 +50,8 @@ void ScoreBoard::save() {
   fclose(file);
 }
 
-const char* ScoreBoard::name_at(int i) {
-  return m_scores[i].name;
+string ScoreBoard::name_at(int i) {
+  return string(m_scores[i].name, 3);
 }
 
 int ScoreBoard::score_at(int i) {

@@ -87,8 +87,6 @@ void AudioService::init() {
   MAKE_OSCILLATOR( m_oscillators, AudioSawOscillator );
   MAKE_OSCILLATOR( m_oscillators, AudioTriangleOscillator );
   MAKE_OSCILLATOR( m_oscillators, AudioOscillatorBase ); // silence
-
-  cout << "m_sample_rate=" << sample_rate << endl;
 }
 
 void AudioService::start() {

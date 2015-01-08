@@ -3,8 +3,6 @@
 #include <GLFW/glfw3.h>
 #include <stdlib.h>
 
-#include <iostream>
-
 #include "common.hh"
 #include "graphics.hh"
 #include "game.hh"
@@ -30,20 +28,16 @@ Game::Game(Application *a, Graphics *g, ScoreBoard *sb, AudioService *as ) :
 
 void Game::reset_for_game() {
 
-  cout << "Game::reset_for_game()" << endl;
-
   m_player.reset_for_game();
   
-  m_ghost_scare_time  = 1050;
-  m_ghost_wander_time = 1050;
+  m_ghost_scare_time  = 750;
+  m_ghost_wander_time = 750;
 
   next_round();
 }
 
 void Game::reset_for_round() {
   
-  cout << "Game::reset_for_round()" << endl;
-
   m_score_multiplier = 2;
 
   m_freeze = 80;
@@ -56,12 +50,10 @@ void Game::reset_for_round() {
   for( vector<Ghost>::iterator it = m_ghosts.begin(); it != m_ghosts.end(); it++ ) 
     it->reset(m_ghost_wander_time);
 
-  m_audio->play( 0, SP_START_LEVEL );
+  m_audio->play( 1, SP_START_LEVEL );
 }
 
 void Game::next_round() {
-
-  cout << "Game::next_round()" << endl;
 
   m_ghost_wander_time -= 50;
   m_ghost_scare_time  -= 50;
@@ -120,7 +112,6 @@ void Game::move() {
   }
 
   if( m_player.pip_count() == m_board.pip_count() ) {
-    cout << "you have all the pips" << endl;
     next_round();
     return;
   } 
@@ -224,8 +215,8 @@ void Game::draw() {
   if( m_freeze ) {
 
     switch(m_freeze_message) {
-      case FM_READY:     m_graphics->draw_font_string( 104-(6<<1),  17*8+16, "READY!"); break;
-      case FM_GAME_OVER: m_graphics->draw_font_string( 104-(10<<1), 17*8+16, "GAME OVER!"); break;
+      case FM_READY:     m_graphics->draw_font_string( 112-(6<<2),  17*8+16, "READY!"); break;
+      case FM_GAME_OVER: m_graphics->draw_font_string( 112-(10<<2), 17*8+16, "GAME OVER!"); break;
     }
 
     return;
@@ -267,23 +258,14 @@ void Game::on_key_down( int k ) {
 
 /* score graphics stuff */
 
-const int ScoreGraphic::s_step_size = 20;
-
 bool ScoreGraphic::is_alive() {
   return m_count;
 }
 
 void ScoreGraphic::move() {
 
-  if(m_step) {
-    m_step--;
-    return;
-  }
-
-  m_step = s_step_size;
-
-  m_count--;
-  m_ypos--;
+  if(m_count) m_count--;
+  m_ypos -= 2;
 }
 
 void ScoreGraphic::draw() {
@@ -297,7 +279,6 @@ ScoreGraphic::ScoreGraphic( Graphics *g, int x, int y, int n ) {
   m_xpos  = x;
   m_ypos  = y;
   m_count = 32;
-  m_step  = s_step_size;
 
   switch(n) {
     case  2: m_sprite = 0; break;

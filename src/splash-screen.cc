@@ -1,8 +1,4 @@
 
-#include <iostream>
-using std::cout;
-using std::endl;
-
 #include <string.h>
 
 #include <GLFW/glfw3.h>

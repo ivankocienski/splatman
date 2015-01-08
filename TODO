@@ -80,9 +80,24 @@ chicken bits
 ============
 
 * audio on score entry screen
-- splash screen animation
+* splash screen animation
+* score powerups
+* game text alignment
+* fix score table view
+- ghost speed/timing tuning
 - ghost proximity sound in game?
 - ghost scared sound in game?
-- ghost speed/timing tuning
-- score powerups
-- game text alignment
+
+
+- sometimes the enemy 'eyes' go in the wrong dir
+  (seen when at the bottom of the screen)
+
+- lots of play testing
+
+
+future
+======
+
+- better ghost AI.
+- fruit score ups
+

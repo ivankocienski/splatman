@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include <string>
+
 class ScoreBoard {
 private:
 
@@ -27,7 +29,7 @@ public:
   void load();
   void save();
 
-  const char* name_at(int);
+  std::string name_at(int);
   int score_at(int);
   void date_at( int, char*, int );
 

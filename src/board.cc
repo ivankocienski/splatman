@@ -1,7 +1,4 @@
 
-#include <iostream>
-using namespace std;
-
 #include <GL/gl.h>
 #include <string.h>
 
@@ -28,8 +25,6 @@ void Board::reset() {
   for( int i = 0; i < 28 * 31; i++ ) {
     if( m_grid[i] == '.' ) m_pip_count++;
   }
-
-  cout << "board:: pip_count=" << m_pip_count << endl;
 }
 
 void Board::draw() {
