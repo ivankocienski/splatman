@@ -63,7 +63,7 @@ void ScoreBoard::date_at( int i, char *buffer, int buflen ) {
 }
 
 bool ScoreBoard::is_on_high_scores(int s) {
-  return s > m_scores[9].score;
+  return s >= m_scores[9].score;
 }
 
 int ScoreBoard::loweset_score() {
@@ -74,18 +74,17 @@ void ScoreBoard::push_new_score( int ns ) {
 
   if( !is_on_high_scores(ns) ) return;
 
-  m_new_position = 9;
+  m_new_position = 0;
 
-  for( int i = 8; i > 0; i-- ) {
+  while( m_new_position < 9 ) {
 
-    if( ns > m_scores[i].score ) continue;
+    if( ns >= m_scores[m_new_position].score ) break;
 
-    m_new_position = i+1; 
-    break;
+    m_new_position++; 
   }
 
-  for( int i = 8; i > m_new_position; i-- ) {
-    m_scores[i] = m_scores[i - 1];
+  for( int i = 8; i >= m_new_position; i-- ) {
+    m_scores[i + 1] = m_scores[i];
   }
 
   time_t tm; 
@@ -114,3 +113,4 @@ int ScoreBoard::new_score_pos() {
 void ScoreBoard::clear_new_score_pos() {
   m_new_position = -1;
 }
+
